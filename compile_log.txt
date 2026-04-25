@@ -1,0 +1,20 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.4/staging' branch; Version is '6000.4.3f1 (39d1a88d4dd1) revision 3789224'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-Administrator" at "2026-04-25T06:45:24.4184004Z"
+OS: 'Windows 11  (10.0.26200) Professional' Language: 'zh' Physical Memory: 16226 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-04-25T06:45:24Z
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.4.3f1\Editor\Unity.exe
+-batchmode
+-quit
+-projectPath
+D:\projects\3DAutoChess
+-logFile
+D:\projects\3DAutoChess\compile_log.txt
+Successfully changed project path to: D:\projects\3DAutoChess
+D:/projects/3DAutoChess
+Exiting without the bug reporter. Application will terminate with return code 1
