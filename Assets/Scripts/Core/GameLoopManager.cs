@@ -24,12 +24,16 @@ namespace AutoChess.Core
         [SerializeField] private EconomyManager economyManager;
         [SerializeField] private EquipmentManager equipmentManager;
         [SerializeField] private CreepManager creepManager;
+        [SerializeField] private AugmentManager augmentManager;
+        [SerializeField] private CarouselManager carouselManager;
+        [SerializeField] private CombatStatsTracker combatStatsTracker;
 
         [Header("Data Assets")]
         [SerializeField] private List<HeroData> availableHeroes;
         [SerializeField] private List<FactionData> availableFactions;
         [SerializeField] private List<EquipmentData> availableEquipment;
         [SerializeField] private List<CreepRoundData> creepRoundData;
+        [SerializeField] private List<AugmentData> availableAugments;
 
         public GamePhase CurrentPhase { get; private set; } = GamePhase.Preparation;
         public int CurrentRound { get; private set; } = 1;
@@ -45,6 +49,8 @@ namespace AutoChess.Core
         private Coroutine phaseCoroutine;
         private bool isCreepRound = false;
         private CreepRoundData currentCreepData = null;
+        private List<AugmentData> currentAugmentChoices = null;
+        private List<CarouselItemData> currentCarouselItems = null;
 
         void Awake()
         {
@@ -53,7 +59,24 @@ namespace AutoChess.Core
 
         void Start()
         {
+            CurrentPhase = GamePhase.Title;
+            uiManager?.ShowTitleScreen();
+        }
+
+        public void StartGame()
+        {
+            uiManager?.HideTitleScreen();
             InitializeGame();
+        }
+
+        void Update()
+        {
+            if (CurrentPhase == GamePhase.Combat && combatManager != null && combatManager.IsCombatActive)
+            {
+                uiManager?.UpdateTimer(combatManager.RemainingTime);
+                if (combatManager.IsOvertime)
+                    uiManager?.ShowPhase("加时赛", gameConfig.combatOvertimeDuration);
+            }
         }
 
         void InitializeGame()
@@ -79,6 +102,12 @@ namespace AutoChess.Core
                 equipmentManager.Setup(availableEquipment);
             if (creepManager != null)
                 creepManager.Setup(gameConfig, boardManager, availableEquipment, creepRoundData);
+            if (augmentManager != null)
+                augmentManager.Setup(availableAugments);
+            if (carouselManager != null)
+                carouselManager.Setup(boardManager, gameConfig);
+            if (combatStatsTracker != null)
+                combatStatsTracker.Clear();
 
             // Give each player a free random 1-cost hero (not from shop)
             foreach (var player in allPlayers)
@@ -121,7 +150,7 @@ namespace AutoChess.Core
         void StartPreparationPhase()
         {
             CurrentPhase = GamePhase.Preparation;
-            PhaseTimer = gameConfig.preparationDuration;
+            PhaseTimer = CurrentRound == 1 ? 5f : gameConfig.preparationDuration;
             uiManager?.ShowPhase("准备阶段", PhaseTimer);
 
             bool isFirstRound = CurrentRound == 1;
@@ -134,6 +163,21 @@ namespace AutoChess.Core
                 // Grant income (skip round 1 — starting gold already given)
                 if (!isFirstRound)
                     economyManager.GrantRoundIncome(player, CurrentRound);
+
+                // Auto +2 exp per round (skip round 1)
+                if (!isFirstRound)
+                {
+                    player.exp += 2;
+                    player.CheckLevelUp(gameConfig);
+                }
+
+                // Augment per-round effects
+                if (!isFirstRound)
+                {
+                    player.freeRefreshRemaining = player.freeRefreshPerRound;
+                    if (augmentManager != null)
+                        augmentManager.ApplyExpPerRound(player, gameConfig);
+                }
 
                 // Refresh shop (skip round 1 — no shop on first round)
                 if (!isFirstRound && !player.shopLocked)
@@ -176,10 +220,60 @@ namespace AutoChess.Core
             StartCombatPhase();
         }
 
+        void AutoFillBoard(PlayerData player)
+        {
+            int currentOnBoard = player.GetCurrentBoardUnitCount();
+            int maxOnBoard = player.GetMaxUnitsOnBoard();
+            int slotsToFill = maxOnBoard - currentOnBoard;
+            if (slotsToFill <= 0 || player.benchPieces.Count == 0) return;
+
+            var benchCopy = new List<ChessPiece>(player.benchPieces);
+            // Shuffle for random selection
+            for (int i = benchCopy.Count - 1; i > 0; i--)
+            {
+                int j = Random.Range(0, i + 1);
+                (benchCopy[i], benchCopy[j]) = (benchCopy[j], benchCopy[i]);
+            }
+
+            int placed = 0;
+            foreach (var piece in benchCopy)
+            {
+                if (placed >= slotsToFill) break;
+                if (piece == null || !piece.IsAlive) continue;
+
+                // Find empty player-side slot
+                for (int r = 0; r < gameConfig.boardRows; r++)
+                {
+                    bool found = false;
+                    for (int c = 0; c < gameConfig.boardCols; c++)
+                    {
+                        var slot = boardManager.GetSlot(r, c);
+                        if (slot != null && !slot.IsOccupied)
+                        {
+                            boardManager.PlacePiece(piece, r, c);
+                            placed++;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) break;
+                }
+            }
+
+            if (placed > 0)
+                Debug.Log($"[AutoFill] {player.playerName}: placed {placed} pieces from bench to board");
+        }
+
         void StartCombatPhase()
         {
             CurrentPhase = GamePhase.Combat;
-            uiManager?.ShowPhase("战斗阶段", 0);
+            uiManager?.HidePieceDetail();
+            uiManager?.ShowPhase("战斗阶段", gameConfig.combatMaxDuration);
+
+            // Auto-fill board from bench for human player
+            var human = HumanPlayer;
+            if (human != null && human.IsAlive)
+                AutoFillBoard(human);
 
             // Save all player boards before combat
             foreach (var player in allPlayers)
@@ -192,12 +286,31 @@ namespace AutoChess.Core
             }
 
             // Human player's match
-            var human = HumanPlayer;
             isCreepRound = creepManager != null && creepManager.IsCreepRound(CurrentRound);
             currentCreepData = isCreepRound ? creepManager.GetCreepData(CurrentRound) : null;
 
+            // Apply augment combat buffs to all alive players' board pieces
+            if (augmentManager != null)
+            {
+                foreach (var player in allPlayers)
+                {
+                    if (!player.IsAlive) continue;
+                    augmentManager.ApplyAugmentCombatBuffs(player.boardPieces, player);
+                }
+            }
+
             if (human != null && human.IsAlive)
             {
+                // Check if human has any pieces on board
+                bool hasBoardPieces = human.boardPieces.Count > 0;
+                if (!hasBoardPieces)
+                {
+                    Debug.Log("[Combat] Human has no pieces on board — instant loss.");
+                    SimulateAIVersusAI();
+                    EndCombat(false);
+                    return;
+                }
+
                 if (isCreepRound && currentCreepData != null)
                 {
                     uiManager?.ShowMatchup(human.playerName, currentCreepData.roundName);
@@ -407,7 +520,7 @@ namespace AutoChess.Core
                 uiManager?.ShowCombatResult(attackerWon, 0);
                 uiManager?.UpdateUI();
 
-                // Clear creeps
+                combatStatsTracker?.RecordResult(CurrentRound, currentCreepData?.roundName ?? "野怪", attackerWon, 0, true);
                 creepManager?.ClearCreeps();
                 isCreepRound = false;
                 currentCreepData = null;
@@ -416,21 +529,42 @@ namespace AutoChess.Core
             {
                 var opponent = human?.lastOpponent;
                 int damage = 0;
+                bool draw = combatManager != null && combatManager.IsDraw;
+
                 if (human != null && opponent != null)
                 {
-                    var winner = attackerWon ? human : opponent;
-                    var loser = attackerWon ? opponent : human;
+                    if (draw)
+                    {
+                        // Both sides take damage
+                        int humanStars = combatManager.GetAliveStarCount(human);
+                        int opponentStars = combatManager.GetAliveStarCount(opponent);
+                        int humanDmg = 2 + opponentStars;
+                        int opponentDmg = 2 + humanStars;
+                        human.health -= humanDmg;
+                        opponent.health -= opponentDmg;
+                        if (human.health < 0) human.health = 0;
+                        if (opponent.health < 0) opponent.health = 0;
+                        damage = humanDmg;
+                        Debug.Log($"Draw! {human.playerName} takes {humanDmg} dmg, {opponent.playerName} takes {opponentDmg} dmg");
+                    }
+                    else
+                    {
+                        var winner = attackerWon ? human : opponent;
+                        var loser = attackerWon ? opponent : human;
 
-                    int aliveStars = combatManager.GetAliveStarCount(winner);
-                    damage = 2 + aliveStars;
-                    loser.health -= damage;
-                    if (loser.health < 0) loser.health = 0;
+                        int aliveStars = combatManager.GetAliveStarCount(winner);
+                        damage = 2 + aliveStars;
+                        loser.health -= damage;
+                        if (loser.health < 0) loser.health = 0;
 
-                    economyManager.UpdateStreaks(winner, loser);
+                        economyManager.UpdateStreaks(winner, loser);
+                    }
                 }
 
-                uiManager?.ShowCombatResult(attackerWon, damage);
+                uiManager?.ShowCombatResult(draw ? true : attackerWon, damage);
                 uiManager?.UpdateUI();
+
+                combatStatsTracker?.RecordResult(CurrentRound, opponent?.playerName ?? "未知", draw || attackerWon, damage);
 
                 // Clear opponent mirror pieces from board
                 ClearEnemySide();
@@ -494,6 +628,143 @@ namespace AutoChess.Core
             // Cleanup dead players' pieces from scene
             CleanupDeadPlayers();
 
+            StartNextPhase();
+        }
+
+        void StartNextPhase()
+        {
+            if (System.Array.IndexOf(gameConfig.augmentRounds, CurrentRound) >= 0)
+            {
+                StartAugmentPhase();
+            }
+            else if (System.Array.IndexOf(gameConfig.carouselRounds, CurrentRound) >= 0)
+            {
+                StartCarouselPhase();
+            }
+            else
+            {
+                StartPreparationPhase();
+            }
+        }
+
+        void StartAugmentPhase()
+        {
+            CurrentPhase = GamePhase.AugmentSelect;
+            PhaseTimer = gameConfig.augmentSelectDuration;
+
+            int tier = augmentManager != null ? augmentManager.GetTierForRound(CurrentRound, gameConfig.augmentRounds) : 1;
+            currentAugmentChoices = augmentManager?.GenerateChoices(tier);
+
+            // AI players auto-pick
+            foreach (var player in allPlayers)
+            {
+                if (player.isHuman || !player.IsAlive) continue;
+                var aiChoices = augmentManager?.GenerateChoices(tier);
+                if (aiChoices != null && aiChoices.Count > 0)
+                {
+                    var pick = augmentManager.AIChoose(aiChoices);
+                    augmentManager.ApplyAugment(player, pick);
+                }
+            }
+
+            uiManager?.ShowPhase("海克斯选择", PhaseTimer);
+            uiManager?.ShowAugmentSelection(currentAugmentChoices);
+
+            if (phaseCoroutine != null) StopCoroutine(phaseCoroutine);
+            phaseCoroutine = StartCoroutine(AugmentTimer(currentAugmentChoices));
+        }
+
+        IEnumerator AugmentTimer(List<AugmentData> choices)
+        {
+            while (PhaseTimer > 0)
+            {
+                PhaseTimer -= Time.deltaTime;
+                uiManager?.UpdateTimer(PhaseTimer);
+                yield return null;
+            }
+            // Timeout: auto-pick first choice for human
+            if (choices != null && choices.Count > 0)
+                OnAugmentSelected(0);
+        }
+
+        public void OnAugmentSelected(int index)
+        {
+            if (CurrentPhase != GamePhase.AugmentSelect) return;
+
+            var human = HumanPlayer;
+            if (human != null && human.IsAlive && currentAugmentChoices != null && index >= 0 && index < currentAugmentChoices.Count)
+            {
+                augmentManager?.ApplyAugment(human, currentAugmentChoices[index]);
+            }
+
+            currentAugmentChoices = null;
+            uiManager?.HideAugmentSelection();
+
+            if (phaseCoroutine != null) StopCoroutine(phaseCoroutine);
+            StartPreparationPhase();
+        }
+
+        void StartCarouselPhase()
+        {
+            CurrentPhase = GamePhase.Carousel;
+            PhaseTimer = gameConfig.carouselSelectDuration;
+
+            var heroes = availableHeroes.ToArray();
+            var baseEquips = availableEquipment.FindAll(e => e.equipmentType == EquipmentType.Base).ToArray();
+            currentCarouselItems = carouselManager?.GenerateItems(heroes, baseEquips);
+
+            // AI players pick in order (lowest health first)
+            var pickOrder = carouselManager?.GetPickOrder(allPlayers);
+            if (pickOrder != null && currentCarouselItems != null)
+            {
+                foreach (var player in pickOrder)
+                {
+                    if (player.isHuman) continue;
+                    int idx = carouselManager.AIChoose(currentCarouselItems);
+                    if (idx >= 0) carouselManager.PickItem(player, idx);
+                }
+            }
+
+            uiManager?.ShowPhase("选秀轮", PhaseTimer);
+            uiManager?.ShowCarouselSelection(currentCarouselItems);
+
+            if (phaseCoroutine != null) StopCoroutine(phaseCoroutine);
+            phaseCoroutine = StartCoroutine(CarouselTimer(currentCarouselItems));
+        }
+
+        IEnumerator CarouselTimer(List<CarouselItemData> items)
+        {
+            while (PhaseTimer > 0)
+            {
+                PhaseTimer -= Time.deltaTime;
+                uiManager?.UpdateTimer(PhaseTimer);
+                yield return null;
+            }
+            // Timeout: auto-pick first available for human
+            if (items != null)
+            {
+                for (int i = 0; i < items.Count; i++)
+                {
+                    if (!items[i].picked)
+                    {
+                        OnCarouselSelected(i);
+                        break;
+                    }
+                }
+            }
+        }
+
+        public void OnCarouselSelected(int index)
+        {
+            if (CurrentPhase != GamePhase.Carousel) return;
+
+            var human = HumanPlayer;
+            if (human != null && human.IsAlive)
+                carouselManager?.PickItem(human, index);
+
+            uiManager?.HideCarouselSelection();
+
+            if (phaseCoroutine != null) StopCoroutine(phaseCoroutine);
             StartPreparationPhase();
         }
 

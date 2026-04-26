@@ -27,10 +27,10 @@ namespace AutoChess.Core
             int interest = player.GetInterest(gameConfig);
             int streakBonus = GetStreakBonus(player);
 
-            int total = baseIncome + interest + streakBonus;
+            int total = baseIncome + interest + streakBonus + player.bonusGoldPerRound;
             player.gold += total;
 
-            Debug.Log($"{player.playerName} income: Base={baseIncome}, Interest={interest}, Streak={streakBonus}, Total={total}. Now has {player.gold} gold.");
+            Debug.Log($"{player.playerName} income: Base={baseIncome}, Interest={interest}, Streak={streakBonus}, Augment={player.bonusGoldPerRound}, Total={total}. Now has {player.gold} gold.");
         }
 
         int GetStreakBonus(PlayerData player)

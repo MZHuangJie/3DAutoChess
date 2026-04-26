@@ -79,16 +79,6 @@ namespace AutoChess.Core
                 }
             }
 
-            // Divider line between player and enemy rows
-            GL.Begin(GL.LINES);
-            GL.Color(dividerColor);
-            float divZ = (board.GetSlotWorldPos(board.PlayerRows - 1, 0).z + board.GetSlotWorldPos(board.PlayerRows, 0).z) * 0.5f;
-            float minX = board.GetSlotWorldPos(0, 0).x - cellSize * 0.6f;
-            float maxX = board.GetSlotWorldPos(0, board.Cols - 1).x + cellSize * 0.6f;
-            GL.Vertex(new Vector3(minX, 0.03f, divZ));
-            GL.Vertex(new Vector3(maxX, 0.03f, divZ));
-            GL.End();
-
             // Bench slots (rectangles)
             var benchConfig = board.Config;
             for (int i = 0; i < benchConfig.benchSlots; i++)

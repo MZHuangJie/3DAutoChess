@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf5ef907b3e51484694cdf821bc53258, type: 3}
+  m_Name: Hex_T2_Interest
+  m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.AugmentData
+  augmentName: "\u590D\u5229\u6295\u8D44"
+  description: "\u5229\u606F\u4E0A\u9650+3"
+  tier: 2
+  iconColor: {r: 0.9, g: 0.7, b: 0.1, a: 1}
+  effectType: 6
+  effectValue: 3

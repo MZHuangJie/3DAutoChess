@@ -19,10 +19,11 @@ MonoBehaviour:
   boardSpacing: 2
   preparationDuration: 30
   combatMaxDuration: 30
+  combatOvertimeDuration: 15
   resultDuration: 3
   startingHealth: 100
   startingGold: 5
-  startingLevel: 3
+  startingLevel: 1
   maxLevel: 10
   baseIncomePerRound: 5
   maxInterest: 5
@@ -30,7 +31,7 @@ MonoBehaviour:
   streakBonus: 0000000000000000010000000200000003000000
   shopSlotCount: 5
   refreshCost: 2
-  expCost: 00000000000000000200000004000000080000000c00000014000000200000003000000050000000
+  expCost: 000000000000000002000000060000000a0000000e00000014000000240000004c00000054000000
   expBuyCost: 4
   expPerBuy: 4
   poolCountByCost: 00000000270000001a000000120000000d0000000a000000
@@ -48,3 +49,7 @@ MonoBehaviour:
   moveSpeed: 3
   pveRounds: 0100000002000000030000000a0000001100000018000000
   pveLossDamage: 0
+  augmentRounds: 04000000090000000f000000
+  augmentSelectDuration: 30
+  carouselRounds: 050000000c00000013000000
+  carouselSelectDuration: 20

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0469da8455e4ae149be7d8c8d7b029ad, type: 3}
+  m_Name: "Eq_\u51B0\u971C\u4E4B\u5FC3"
+  m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.EquipmentData
+  equipmentName: "\u51B0\u971C\u4E4B\u5FC3"
+  equipmentType: 1
+  displayColor: {r: 0.3, g: 0.5, b: 0.8, a: 1}
+  healthBonus: 0
+  attackBonus: 0
+  armorBonus: 20
+  magicResistBonus: 0
+  attackSpeedBonus: 0
+  manaBonus: 15
+  lifestealPercent: 0
+  spellDamageBonus: 0
+  dodgeChance: 0
+  recipe1: {fileID: 11400000, guid: 7854c73bb31dbdc439e6f36621acbe5a, type: 2}
+  recipe2: {fileID: 11400000, guid: b657275812389094fa10249c96529231, type: 2}

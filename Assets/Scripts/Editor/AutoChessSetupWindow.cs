@@ -23,6 +23,7 @@ namespace AutoChess.Editor
             var factions = CreateFactions();
             var equipment = CreateEquipment();
             var creepRounds = CreateCreepRounds();
+            var augments = CreateAugments();
 
             // 2. Create Materials
             var mat = CreatePieceMaterial();
@@ -31,14 +32,14 @@ namespace AutoChess.Editor
             var piecePrefab = CreatePiecePrefab(mat);
 
             // 4. Setup Scene
-            SetupScene(gameConfig, heroes, factions, equipment, creepRounds, piecePrefab);
+            SetupScene(gameConfig, heroes, factions, equipment, creepRounds, augments, piecePrefab);
 
             // Save
             EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene());
             AssetDatabase.SaveAssets();
 
             EditorUtility.DisplayDialog("Setup Complete",
-                "AutoChess Milestone 3 scene has been set up!\n\n" +
+                "AutoChess Milestone 4 scene has been set up!\n\n" +
                 "Press Play to start the game.", "OK");
         }
 
@@ -57,7 +58,7 @@ namespace AutoChess.Editor
             config.resultDuration = 3f;
             config.startingHealth = 100;
             config.startingGold = 5;
-            config.startingLevel = 3;
+            config.startingLevel = 1;
             config.maxLevel = 10;
             config.baseIncomePerRound = 5;
             config.maxInterest = 5;
@@ -65,7 +66,7 @@ namespace AutoChess.Editor
             config.streakBonus = new int[] { 0, 0, 1, 2, 3 };
             config.shopSlotCount = 5;
             config.refreshCost = 2;
-            config.expCost = new int[] { 0, 0, 2, 4, 8, 12, 20, 32, 48, 80 };
+            config.expCost = new int[] { 0, 0, 2, 6, 10, 14, 20, 36, 76, 84 };
             config.expBuyCost = 4;
             config.expPerBuy = 4;
             config.poolCountByCost = new int[] { 0, 39, 26, 18, 13, 10 };
@@ -291,6 +292,7 @@ namespace AutoChess.Editor
             EnsureDirectory("Assets/ScriptableObjects/Equipment");
             var all = new System.Collections.Generic.List<EquipmentData>();
 
+            // 8 base items
             var sword = CreateEquipmentAsset("暴风大剑", EquipmentType.Base, new Color(0.9f, 0.3f, 0.2f), attackBonus: 15);
             var bow = CreateEquipmentAsset("反曲之弓", EquipmentType.Base, new Color(0.2f, 0.8f, 0.3f), attackSpeedBonus: 0.2f);
             var rod = CreateEquipmentAsset("无用大棒", EquipmentType.Base, new Color(0.3f, 0.3f, 0.9f), spellDamageBonus: 20);
@@ -303,29 +305,143 @@ namespace AutoChess.Editor
             all.Add(sword); all.Add(bow); all.Add(rod); all.Add(chain);
             all.Add(cloak); all.Add(belt); all.Add(tear); all.Add(vamp);
 
+            // --- Combined items: all 36 pairwise combinations ---
+            // sword + sword
             var ie = CreateEquipmentAsset("无尽之刃", EquipmentType.Combined, new Color(1f, 0.4f, 0.2f), attackBonus: 40);
-            ie.recipe1 = sword; ie.recipe2 = sword;
-            EditorUtility.SetDirty(ie);
+            ie.recipe1 = sword; ie.recipe2 = sword; EditorUtility.SetDirty(ie);
+            // sword + bow
+            var giantSlayer = CreateEquipmentAsset("巨人杀手", EquipmentType.Combined, new Color(0.9f, 0.5f, 0.3f), attackBonus: 15, attackSpeedBonus: 0.2f);
+            giantSlayer.recipe1 = sword; giantSlayer.recipe2 = bow; EditorUtility.SetDirty(giantSlayer);
+            // sword + rod
+            var hextech = CreateEquipmentAsset("海克斯科技枪刃", EquipmentType.Combined, new Color(0.6f, 0.3f, 0.8f), attackBonus: 15, spellDamageBonus: 20);
+            hextech.recipe1 = sword; hextech.recipe2 = rod; EditorUtility.SetDirty(hextech);
+            // sword + chain
+            var ga = CreateEquipmentAsset("守护天使", EquipmentType.Combined, new Color(0.9f, 0.85f, 0.3f), attackBonus: 15, armorBonus: 20);
+            ga.recipe1 = sword; ga.recipe2 = chain; EditorUtility.SetDirty(ga);
+            // sword + cloak
+            var bt = CreateEquipmentAsset("饮血剑", EquipmentType.Combined, new Color(0.8f, 0.2f, 0.3f), attackBonus: 15, magicResistBonus: 20);
+            bt.recipe1 = sword; bt.recipe2 = cloak; EditorUtility.SetDirty(bt);
+            // sword + belt
+            var zeke = CreateEquipmentAsset("泽克先驱之令", EquipmentType.Combined, new Color(0.85f, 0.5f, 0.2f), attackBonus: 15, healthBonus: 200);
+            zeke.recipe1 = sword; zeke.recipe2 = belt; EditorUtility.SetDirty(zeke);
+            // sword + tear
+            var shojin = CreateEquipmentAsset("破败王者之刃", EquipmentType.Combined, new Color(0.4f, 0.5f, 0.9f), attackBonus: 15, manaBonus: 15);
+            shojin.recipe1 = sword; shojin.recipe2 = tear; EditorUtility.SetDirty(shojin);
+            // sword + vamp
+            var deathblade = CreateEquipmentAsset("死亡之刃", EquipmentType.Combined, new Color(0.6f, 0.1f, 0.15f), attackBonus: 25, lifestealPercent: 0.1f);
+            deathblade.recipe1 = sword; deathblade.recipe2 = vamp; EditorUtility.SetDirty(deathblade);
 
-            var warmog = CreateEquipmentAsset("狂徒铠甲", EquipmentType.Combined, new Color(0.9f, 0.7f, 0.2f), healthBonus: 500);
-            warmog.recipe1 = belt; warmog.recipe2 = belt;
-            EditorUtility.SetDirty(warmog);
-
+            // bow + bow
             var guinsoo = CreateEquipmentAsset("鬼索的狂暴之刃", EquipmentType.Combined, new Color(0.3f, 0.9f, 0.4f), attackSpeedBonus: 0.5f);
-            guinsoo.recipe1 = bow; guinsoo.recipe2 = bow;
-            EditorUtility.SetDirty(guinsoo);
+            guinsoo.recipe1 = bow; guinsoo.recipe2 = bow; EditorUtility.SetDirty(guinsoo);
+            // bow + rod
+            var statikk = CreateEquipmentAsset("电刃", EquipmentType.Combined, new Color(0.4f, 0.8f, 0.9f), attackSpeedBonus: 0.2f, spellDamageBonus: 20);
+            statikk.recipe1 = bow; statikk.recipe2 = rod; EditorUtility.SetDirty(statikk);
+            // bow + chain
+            var phantom = CreateEquipmentAsset("幻影之舞", EquipmentType.Combined, new Color(0.5f, 0.7f, 0.6f), attackSpeedBonus: 0.2f, armorBonus: 20, dodgeChance: 0.2f);
+            phantom.recipe1 = bow; phantom.recipe2 = chain; EditorUtility.SetDirty(phantom);
+            // bow + cloak
+            var runaanHurricane = CreateEquipmentAsset("卢安娜的飓风", EquipmentType.Combined, new Color(0.3f, 0.7f, 0.5f), attackSpeedBonus: 0.3f, magicResistBonus: 20);
+            runaanHurricane.recipe1 = bow; runaanHurricane.recipe2 = cloak; EditorUtility.SetDirty(runaanHurricane);
+            // bow + belt
+            var titanResolve = CreateEquipmentAsset("泰坦的坚决", EquipmentType.Combined, new Color(0.7f, 0.6f, 0.3f), attackSpeedBonus: 0.2f, healthBonus: 200);
+            titanResolve.recipe1 = bow; titanResolve.recipe2 = belt; EditorUtility.SetDirty(titanResolve);
+            // bow + tear
+            var shiv = CreateEquipmentAsset("离子火花", EquipmentType.Combined, new Color(0.3f, 0.6f, 0.8f), attackSpeedBonus: 0.2f, manaBonus: 15);
+            shiv.recipe1 = bow; shiv.recipe2 = tear; EditorUtility.SetDirty(shiv);
+            // bow + vamp
+            var rageknife = CreateEquipmentAsset("嗜血弯刀", EquipmentType.Combined, new Color(0.6f, 0.3f, 0.3f), attackSpeedBonus: 0.3f, lifestealPercent: 0.1f);
+            rageknife.recipe1 = bow; rageknife.recipe2 = vamp; EditorUtility.SetDirty(rageknife);
 
+            // rod + rod
+            var rabadons = CreateEquipmentAsset("灭世者的死亡之帽", EquipmentType.Combined, new Color(0.4f, 0.2f, 0.9f), spellDamageBonus: 50);
+            rabadons.recipe1 = rod; rabadons.recipe2 = rod; EditorUtility.SetDirty(rabadons);
+            // rod + chain
+            var locket = CreateEquipmentAsset("钢铁烈阳之匣", EquipmentType.Combined, new Color(0.5f, 0.5f, 0.7f), spellDamageBonus: 20, armorBonus: 20);
+            locket.recipe1 = rod; locket.recipe2 = chain; EditorUtility.SetDirty(locket);
+            // rod + cloak
+            var ionicSpark = CreateEquipmentAsset("珠光护手", EquipmentType.Combined, new Color(0.4f, 0.3f, 0.8f), spellDamageBonus: 20, magicResistBonus: 20);
+            ionicSpark.recipe1 = rod; ionicSpark.recipe2 = cloak; EditorUtility.SetDirty(ionicSpark);
+            // rod + belt
+            var morello = CreateEquipmentAsset("莫雷洛秘典", EquipmentType.Combined, new Color(0.7f, 0.3f, 0.5f), spellDamageBonus: 20, healthBonus: 200);
+            morello.recipe1 = rod; morello.recipe2 = belt; EditorUtility.SetDirty(morello);
+            // rod + tear
             var archangel = CreateEquipmentAsset("大天使之杖", EquipmentType.Combined, new Color(0.3f, 0.5f, 1f), manaBonus: 30, spellDamageBonus: 40);
-            archangel.recipe1 = tear; archangel.recipe2 = rod;
-            EditorUtility.SetDirty(archangel);
+            archangel.recipe1 = tear; archangel.recipe2 = rod; EditorUtility.SetDirty(archangel);
+            // rod + vamp
+            var gunblade = CreateEquipmentAsset("灵风", EquipmentType.Combined, new Color(0.6f, 0.2f, 0.6f), spellDamageBonus: 20, lifestealPercent: 0.1f);
+            gunblade.recipe1 = rod; gunblade.recipe2 = vamp; EditorUtility.SetDirty(gunblade);
 
-            all.Add(ie); all.Add(warmog); all.Add(guinsoo); all.Add(archangel);
+            // chain + chain
+            var brambleVest = CreateEquipmentAsset("棘刺背心", EquipmentType.Combined, new Color(0.5f, 0.6f, 0.5f), armorBonus: 50);
+            brambleVest.recipe1 = chain; brambleVest.recipe2 = chain; EditorUtility.SetDirty(brambleVest);
+            // chain + cloak
+            var gargoyle = CreateEquipmentAsset("石像鬼板甲", EquipmentType.Combined, new Color(0.5f, 0.4f, 0.6f), armorBonus: 20, magicResistBonus: 20);
+            gargoyle.recipe1 = chain; gargoyle.recipe2 = cloak; EditorUtility.SetDirty(gargoyle);
+            // chain + belt
+            var sunfire = CreateEquipmentAsset("日炎斗篷", EquipmentType.Combined, new Color(0.8f, 0.4f, 0.2f), armorBonus: 20, healthBonus: 200);
+            sunfire.recipe1 = chain; sunfire.recipe2 = belt; EditorUtility.SetDirty(sunfire);
+            // chain + tear
+            var frozenHeart = CreateEquipmentAsset("冰霜之心", EquipmentType.Combined, new Color(0.3f, 0.5f, 0.8f), armorBonus: 20, manaBonus: 15);
+            frozenHeart.recipe1 = chain; frozenHeart.recipe2 = tear; EditorUtility.SetDirty(frozenHeart);
+            // chain + vamp
+            var stoneplate = CreateEquipmentAsset("锁子血甲", EquipmentType.Combined, new Color(0.6f, 0.5f, 0.4f), armorBonus: 20, lifestealPercent: 0.1f);
+            stoneplate.recipe1 = chain; stoneplate.recipe2 = vamp; EditorUtility.SetDirty(stoneplate);
+
+            // cloak + cloak
+            var dragonClaw = CreateEquipmentAsset("龙爪", EquipmentType.Combined, new Color(0.4f, 0.2f, 0.6f), magicResistBonus: 50);
+            dragonClaw.recipe1 = cloak; dragonClaw.recipe2 = cloak; EditorUtility.SetDirty(dragonClaw);
+            // cloak + belt
+            var zephyr = CreateEquipmentAsset("和风", EquipmentType.Combined, new Color(0.5f, 0.6f, 0.7f), magicResistBonus: 20, healthBonus: 200);
+            zephyr.recipe1 = cloak; zephyr.recipe2 = belt; EditorUtility.SetDirty(zephyr);
+            // cloak + tear
+            var hush = CreateEquipmentAsset("静止法衣", EquipmentType.Combined, new Color(0.4f, 0.4f, 0.7f), magicResistBonus: 20, manaBonus: 15);
+            hush.recipe1 = cloak; hush.recipe2 = tear; EditorUtility.SetDirty(hush);
+            // cloak + vamp
+            var quicksilver = CreateEquipmentAsset("水银", EquipmentType.Combined, new Color(0.6f, 0.3f, 0.5f), magicResistBonus: 20, lifestealPercent: 0.1f);
+            quicksilver.recipe1 = cloak; quicksilver.recipe2 = vamp; EditorUtility.SetDirty(quicksilver);
+
+            // belt + belt
+            var warmog = CreateEquipmentAsset("狂徒铠甲", EquipmentType.Combined, new Color(0.9f, 0.7f, 0.2f), healthBonus: 500);
+            warmog.recipe1 = belt; warmog.recipe2 = belt; EditorUtility.SetDirty(warmog);
+            // belt + tear
+            var redemption = CreateEquipmentAsset("救赎", EquipmentType.Combined, new Color(0.6f, 0.7f, 0.4f), healthBonus: 200, manaBonus: 15);
+            redemption.recipe1 = belt; redemption.recipe2 = tear; EditorUtility.SetDirty(redemption);
+            // belt + vamp
+            var bloodthirster = CreateEquipmentAsset("嗜血之力", EquipmentType.Combined, new Color(0.7f, 0.2f, 0.3f), healthBonus: 200, lifestealPercent: 0.15f);
+            bloodthirster.recipe1 = belt; bloodthirster.recipe2 = vamp; EditorUtility.SetDirty(bloodthirster);
+
+            // tear + tear
+            var blueBuff = CreateEquipmentAsset("蓝霸符", EquipmentType.Combined, new Color(0.2f, 0.4f, 0.9f), manaBonus: 40);
+            blueBuff.recipe1 = tear; blueBuff.recipe2 = tear; EditorUtility.SetDirty(blueBuff);
+            // tear + vamp
+            var handOfJustice = CreateEquipmentAsset("正义之手", EquipmentType.Combined, new Color(0.5f, 0.4f, 0.6f), manaBonus: 15, lifestealPercent: 0.15f);
+            handOfJustice.recipe1 = tear; handOfJustice.recipe2 = vamp; EditorUtility.SetDirty(handOfJustice);
+
+            // vamp + vamp
+            var bloodletter = CreateEquipmentAsset("嗜血者", EquipmentType.Combined, new Color(0.6f, 0.1f, 0.1f), lifestealPercent: 0.25f);
+            bloodletter.recipe1 = vamp; bloodletter.recipe2 = vamp; EditorUtility.SetDirty(bloodletter);
+
+            all.Add(ie); all.Add(giantSlayer); all.Add(hextech); all.Add(ga);
+            all.Add(bt); all.Add(zeke); all.Add(shojin); all.Add(deathblade);
+            all.Add(guinsoo); all.Add(statikk); all.Add(phantom); all.Add(runaanHurricane);
+            all.Add(titanResolve); all.Add(shiv); all.Add(rageknife);
+            all.Add(rabadons); all.Add(locket); all.Add(ionicSpark); all.Add(morello);
+            all.Add(archangel); all.Add(gunblade);
+            all.Add(brambleVest); all.Add(gargoyle); all.Add(sunfire); all.Add(frozenHeart); all.Add(stoneplate);
+            all.Add(dragonClaw); all.Add(zephyr); all.Add(hush); all.Add(quicksilver);
+            all.Add(warmog); all.Add(redemption); all.Add(bloodthirster);
+            all.Add(blueBuff); all.Add(handOfJustice);
+            all.Add(bloodletter);
+
+            AssetDatabase.SaveAssets();
             return all;
         }
 
         static EquipmentData CreateEquipmentAsset(string name, EquipmentType type, Color color,
             int healthBonus = 0, int attackBonus = 0, int armorBonus = 0, int magicResistBonus = 0,
-            float attackSpeedBonus = 0f, int manaBonus = 0, float lifestealPercent = 0f, int spellDamageBonus = 0)
+            float attackSpeedBonus = 0f, int manaBonus = 0, float lifestealPercent = 0f, int spellDamageBonus = 0,
+            float dodgeChance = 0f)
         {
             var eq = ScriptableObject.CreateInstance<EquipmentData>();
             eq.equipmentName = name;
@@ -339,8 +455,13 @@ namespace AutoChess.Editor
             eq.manaBonus = manaBonus;
             eq.lifestealPercent = lifestealPercent;
             eq.spellDamageBonus = spellDamageBonus;
+            eq.dodgeChance = dodgeChance;
             string safeName = name.Replace(" ", "_");
-            AssetDatabase.CreateAsset(eq, $"Assets/ScriptableObjects/Equipment/Eq_{safeName}.asset");
+            string path = $"Assets/ScriptableObjects/Equipment/Eq_{safeName}.asset";
+            var existing = AssetDatabase.LoadAssetAtPath<EquipmentData>(path);
+            if (existing != null)
+                AssetDatabase.DeleteAsset(path);
+            AssetDatabase.CreateAsset(eq, path);
             return eq;
         }
 
@@ -399,6 +520,70 @@ namespace AutoChess.Editor
             data.creeps = creeps;
             AssetDatabase.CreateAsset(data, $"Assets/ScriptableObjects/CreepRounds/{fileName}.asset");
             return data;
+        }
+
+        static System.Collections.Generic.List<AugmentData> CreateAugments()
+        {
+            EnsureDirectory("Assets/ScriptableObjects/Hexes");
+            var list = new System.Collections.Generic.List<AugmentData>();
+
+            // Tier 1 (6)
+            list.Add(CreateAugmentAsset("Hex_T1_Attack", "利刃之力", "所有棋子攻击力+10%", 1,
+                new Color(0.9f, 0.3f, 0.2f), AugmentEffectType.AllAttackPercent, 10));
+            list.Add(CreateAugmentAsset("Hex_T1_Health", "坚韧体魄", "所有棋子生命值+10%", 1,
+                new Color(0.2f, 0.8f, 0.3f), AugmentEffectType.AllHealthPercent, 10));
+            list.Add(CreateAugmentAsset("Hex_T1_Gold", "聚宝盆", "每回合额外获得1金币", 1,
+                new Color(0.9f, 0.8f, 0.2f), AugmentEffectType.BonusGoldPerRound, 1));
+            list.Add(CreateAugmentAsset("Hex_T1_Refresh", "慧眼识珠", "每回合1次免费刷新", 1,
+                new Color(0.3f, 0.6f, 0.9f), AugmentEffectType.FreeRefreshPerRound, 1));
+            list.Add(CreateAugmentAsset("Hex_T1_Armor", "铁壁", "所有棋子护甲+10", 1,
+                new Color(0.6f, 0.6f, 0.6f), AugmentEffectType.AllArmorFlat, 10));
+            list.Add(CreateAugmentAsset("Hex_T1_MR", "魔法屏障", "所有棋子魔抗+10", 1,
+                new Color(0.5f, 0.3f, 0.7f), AugmentEffectType.AllMagicResistFlat, 10));
+
+            // Tier 2 (6)
+            list.Add(CreateAugmentAsset("Hex_T2_Attack", "战争狂热", "所有棋子攻击力+20%", 2,
+                new Color(1f, 0.4f, 0.2f), AugmentEffectType.AllAttackPercent, 20));
+            list.Add(CreateAugmentAsset("Hex_T2_AtkSpd", "疾风之力", "所有棋子攻速+15%", 2,
+                new Color(0.3f, 0.9f, 0.5f), AugmentEffectType.AllAttackSpeedPercent, 15));
+            list.Add(CreateAugmentAsset("Hex_T2_Interest", "复利投资", "利息上限+3", 2,
+                new Color(0.9f, 0.7f, 0.1f), AugmentEffectType.InterestCapBonus, 3));
+            list.Add(CreateAugmentAsset("Hex_T2_Shop", "扩展商店", "商店格子+1", 2,
+                new Color(0.4f, 0.7f, 0.9f), AugmentEffectType.ShopSlotBonus, 1));
+            list.Add(CreateAugmentAsset("Hex_T2_Exp", "知识渊博", "每回合额外获得2经验", 2,
+                new Color(0.6f, 0.4f, 0.9f), AugmentEffectType.ExpPerRound, 2));
+            list.Add(CreateAugmentAsset("Hex_T2_Bench", "扩展备战席", "备战席+1", 2,
+                new Color(0.5f, 0.8f, 0.4f), AugmentEffectType.BenchSlotBonus, 1));
+
+            // Tier 3 (6)
+            list.Add(CreateAugmentAsset("Hex_T3_Attack", "毁灭之力", "所有棋子攻击力+35%", 3,
+                new Color(1f, 0.2f, 0.1f), AugmentEffectType.AllAttackPercent, 35));
+            list.Add(CreateAugmentAsset("Hex_T3_Health", "不朽意志", "所有棋子生命值+25%", 3,
+                new Color(0.1f, 0.9f, 0.2f), AugmentEffectType.AllHealthPercent, 25));
+            list.Add(CreateAugmentAsset("Hex_T3_Gold", "点石成金", "立即获得20金币", 3,
+                new Color(1f, 0.9f, 0.1f), AugmentEffectType.StartingGoldBonus, 20));
+            list.Add(CreateAugmentAsset("Hex_T3_AtkSpd", "狂暴风暴", "所有棋子攻速+30%", 3,
+                new Color(0.2f, 1f, 0.6f), AugmentEffectType.AllAttackSpeedPercent, 30));
+            list.Add(CreateAugmentAsset("Hex_T3_Refresh", "无尽刷新", "每回合3次免费刷新", 3,
+                new Color(0.2f, 0.5f, 1f), AugmentEffectType.FreeRefreshPerRound, 3));
+            list.Add(CreateAugmentAsset("Hex_T3_Armor", "钢铁堡垒", "所有棋子护甲+25", 3,
+                new Color(0.7f, 0.7f, 0.7f), AugmentEffectType.AllArmorFlat, 25));
+
+            return list;
+        }
+
+        static AugmentData CreateAugmentAsset(string fileName, string name, string desc, int tier,
+            Color color, AugmentEffectType effectType, float effectValue)
+        {
+            var aug = ScriptableObject.CreateInstance<AugmentData>();
+            aug.augmentName = name;
+            aug.description = desc;
+            aug.tier = tier;
+            aug.iconColor = color;
+            aug.effectType = effectType;
+            aug.effectValue = effectValue;
+            AssetDatabase.CreateAsset(aug, $"Assets/ScriptableObjects/Hexes/{fileName}.asset");
+            return aug;
         }
 
         static void EnsureDirectory(string path)
@@ -464,6 +649,7 @@ namespace AutoChess.Editor
             System.Collections.Generic.List<FactionData> factions,
             System.Collections.Generic.List<EquipmentData> equipment,
             System.Collections.Generic.List<CreepRoundData> creepRounds,
+            System.Collections.Generic.List<AugmentData> augments,
             GameObject piecePrefab)
         {
             var scene = EditorSceneManager.GetActiveScene();
@@ -488,7 +674,10 @@ namespace AutoChess.Editor
                     go.GetComponent<EconomyManager>() != null ||
                     go.GetComponent<AIController>() != null ||
                     go.GetComponent<EquipmentManager>() != null ||
-                    go.GetComponent<CreepManager>() != null)
+                    go.GetComponent<CreepManager>() != null ||
+                    go.GetComponent<AugmentManager>() != null ||
+                    go.GetComponent<CarouselManager>() != null ||
+                    go.GetComponent<CombatStatsTracker>() != null)
                 {
                     // Collect root object to avoid destroying children separately
                     var root = go.transform.root.gameObject;
@@ -611,6 +800,21 @@ namespace AutoChess.Editor
                 creepMgrSO.FindProperty("creepRounds").GetArrayElementAtIndex(i).objectReferenceValue = creepRounds[i];
             creepMgrSO.ApplyModifiedProperties();
 
+            // ====== AugmentManager ======
+            var augMgrGO = new GameObject("AugmentManager");
+            augMgrGO.transform.SetParent(managerGO.transform);
+            var augMgr = augMgrGO.AddComponent<AugmentManager>();
+
+            // ====== CarouselManager ======
+            var carouselMgrGO = new GameObject("CarouselManager");
+            carouselMgrGO.transform.SetParent(managerGO.transform);
+            var carouselMgr = carouselMgrGO.AddComponent<CarouselManager>();
+
+            // ====== CombatStatsTracker ======
+            var statsGO = new GameObject("CombatStatsTracker");
+            statsGO.transform.SetParent(managerGO.transform);
+            var statsTracker = statsGO.AddComponent<CombatStatsTracker>();
+
             // Link GameLoopManager references
             var glSO = new SerializedObject(gameLoop);
             glSO.FindProperty("boardManager").objectReferenceValue = board;
@@ -623,6 +827,9 @@ namespace AutoChess.Editor
             glSO.FindProperty("economyManager").objectReferenceValue = econ;
             glSO.FindProperty("equipmentManager").objectReferenceValue = eqMgr;
             glSO.FindProperty("creepManager").objectReferenceValue = creepMgr;
+            glSO.FindProperty("augmentManager").objectReferenceValue = augMgr;
+            glSO.FindProperty("carouselManager").objectReferenceValue = carouselMgr;
+            glSO.FindProperty("combatStatsTracker").objectReferenceValue = statsTracker;
 
             // Equipment list
             glSO.FindProperty("availableEquipment").ClearArray();
@@ -635,6 +842,12 @@ namespace AutoChess.Editor
             glSO.FindProperty("creepRoundData").arraySize = creepRounds.Count;
             for (int i = 0; i < creepRounds.Count; i++)
                 glSO.FindProperty("creepRoundData").GetArrayElementAtIndex(i).objectReferenceValue = creepRounds[i];
+
+            // Augment data
+            glSO.FindProperty("availableAugments").ClearArray();
+            glSO.FindProperty("availableAugments").arraySize = augments.Count;
+            for (int i = 0; i < augments.Count; i++)
+                glSO.FindProperty("availableAugments").GetArrayElementAtIndex(i).objectReferenceValue = augments[i];
 
             glSO.ApplyModifiedProperties();
 
@@ -727,6 +940,11 @@ namespace AutoChess.Editor
             var ui = canvasGO.AddComponent<UIManager>();
             var uiSO = new SerializedObject(ui);
 
+            // Assign Chinese font if available
+            var chFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/Fonts/ChineseFont SDF.asset");
+            if (chFont != null)
+                uiSO.FindProperty("chineseFont").objectReferenceValue = chFont;
+
             // Phase Text (top center)
             var phaseGO = CreateText(canvasGO.transform, "PhaseText", "准备阶段", 32, TextAnchor.MiddleCenter);
             phaseGO.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1f);
@@ -741,32 +959,31 @@ namespace AutoChess.Editor
             timerGO.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -80);
             uiSO.FindProperty("timerText").objectReferenceValue = timerGO.GetComponent<TextMeshProUGUI>();
 
-            // Round Text (top left)
-            var roundGO = CreateText(canvasGO.transform, "RoundText", "回合: 1", 24, TextAnchor.MiddleLeft);
-            roundGO.GetComponent<RectTransform>().anchorMin = new Vector2(0, 1f);
-            roundGO.GetComponent<RectTransform>().anchorMax = new Vector2(0, 1f);
-            roundGO.GetComponent<RectTransform>().anchoredPosition = new Vector2(20, -30);
+            // Round Text (top center, left of phase)
+            var roundGO = CreateText(canvasGO.transform, "RoundText", "回合: 1", 24, TextAnchor.MiddleCenter);
+            roundGO.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1f);
+            roundGO.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1f);
+            roundGO.GetComponent<RectTransform>().anchoredPosition = new Vector2(-120, -40);
             uiSO.FindProperty("roundText").objectReferenceValue = roundGO.GetComponent<TextMeshProUGUI>();
 
-            // Player Health (bottom left)
-            var hpGO = CreateText(canvasGO.transform, "PlayerHealth", "玩家: 100 HP", 24, TextAnchor.MiddleLeft);
-            hpGO.GetComponent<RectTransform>().anchorMin = new Vector2(0, 0);
-            hpGO.GetComponent<RectTransform>().anchorMax = new Vector2(0, 0);
-            hpGO.GetComponent<RectTransform>().anchoredPosition = new Vector2(20, 160);
-            uiSO.FindProperty("playerHealthText").objectReferenceValue = hpGO.GetComponent<TextMeshProUGUI>();
+            // Player Health - hidden, managed by UIManager.CreatePlayerInfoPanel
+            var hpGO = CreateText(canvasGO.transform, "PlayerHealth", "", 1, TextAnchor.MiddleLeft);
+            hpGO.SetActive(false);
+            uiSO.FindProperty("playerHealthText").objectReferenceValue = null;
 
-            // AI Health (bottom right, above shop)
-            var aiHpGO = CreateText(canvasGO.transform, "AIHealth", "对手: 100 HP", 24, TextAnchor.MiddleRight);
-            aiHpGO.GetComponent<RectTransform>().anchorMin = new Vector2(1, 0);
-            aiHpGO.GetComponent<RectTransform>().anchorMax = new Vector2(1, 0);
-            aiHpGO.GetComponent<RectTransform>().anchoredPosition = new Vector2(-20, 160);
-            uiSO.FindProperty("aiHealthText").objectReferenceValue = aiHpGO.GetComponent<TextMeshProUGUI>();
+            // AI Health - hidden, managed by UIManager.CreatePlayerInfoPanel
+            var aiHpGO = CreateText(canvasGO.transform, "AIHealth", "", 1, TextAnchor.MiddleRight);
+            aiHpGO.SetActive(false);
+            uiSO.FindProperty("aiHealthText").objectReferenceValue = null;
 
             // Result Text (center, hidden by default)
             var resultGO = CreateText(canvasGO.transform, "ResultText", "", 36, TextAnchor.MiddleCenter);
-            resultGO.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.5f);
-            resultGO.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.5f);
-            resultGO.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            var resultRt = resultGO.GetComponent<RectTransform>();
+            resultRt.anchorMin = new Vector2(0.5f, 0.5f);
+            resultRt.anchorMax = new Vector2(0.5f, 0.5f);
+            resultRt.anchoredPosition = Vector2.zero;
+            resultRt.sizeDelta = new Vector2(800, 60);
+            resultGO.GetComponent<TextMeshProUGUI>().enableWordWrapping = false;
             resultGO.SetActive(false);
             uiSO.FindProperty("resultText").objectReferenceValue = resultGO.GetComponent<TextMeshProUGUI>();
 

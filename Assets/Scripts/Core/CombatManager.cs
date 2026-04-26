@@ -14,10 +14,26 @@ namespace AutoChess.Core
         private List<ChessPiece> allCombatants = new List<ChessPiece>();
         private bool combatActive = false;
         private float combatTimer = 0f;
+        private bool isOvertime = false;
+        private float overtimeTimer = 0f;
+        private bool isDraw = false;
         private PlayerData currentAttacker;
         private PlayerData currentDefender;
 
         public bool IsCombatActive => combatActive;
+        public bool IsOvertime => isOvertime;
+        public bool IsDraw => isDraw;
+
+        public float RemainingTime
+        {
+            get
+            {
+                if (!combatActive) return 0f;
+                if (isOvertime)
+                    return Mathf.Max(0, gameConfig.combatOvertimeDuration - overtimeTimer);
+                return Mathf.Max(0, gameConfig.combatMaxDuration - combatTimer);
+            }
+        }
 
         void Awake()
         {
@@ -47,6 +63,9 @@ namespace AutoChess.Core
 
             combatActive = true;
             combatTimer = 0f;
+            isOvertime = false;
+            overtimeTimer = 0f;
+            isDraw = false;
             Debug.Log($"Combat started: {attacker.playerName} vs {defender.playerName} with {allCombatants.Count} pieces.");
         }
 
@@ -55,7 +74,10 @@ namespace AutoChess.Core
             if (!combatActive) return;
 
             float dt = Time.deltaTime;
-            combatTimer += dt;
+            if (isOvertime)
+                overtimeTimer += dt;
+            else
+                combatTimer += dt;
 
             for (int i = 0; i < allCombatants.Count; i++)
             {
@@ -74,24 +96,35 @@ namespace AutoChess.Core
             bool attackerAlive = allCombatants.Any(p => p.owner == currentAttacker && p.IsAlive);
             bool defenderAlive = allCombatants.Any(p => p.owner == currentDefender && p.IsAlive);
 
-            bool timeout = combatTimer >= gameConfig.combatMaxDuration;
-
-            if (!attackerAlive || !defenderAlive || timeout)
+            // One side wiped out
+            if (!attackerAlive || !defenderAlive)
             {
                 combatActive = false;
-                bool attackerWon;
-                if (timeout)
-                {
-                    int attackerHp = allCombatants.Where(p => p.owner == currentAttacker && p.IsAlive).Sum(p => p.currentHealth);
-                    int defenderHp = allCombatants.Where(p => p.owner == currentDefender && p.IsAlive).Sum(p => p.currentHealth);
-                    attackerWon = attackerHp >= defenderHp;
-                    Debug.Log($"Combat timeout! Attacker HP={attackerHp}, Defender HP={defenderHp}");
-                }
-                else
-                {
-                    attackerWon = attackerAlive;
-                }
+                isDraw = false;
+                bool attackerWon = attackerAlive;
                 GameLoopManager.Instance?.EndCombat(attackerWon);
+                return;
+            }
+
+            if (!isOvertime)
+            {
+                // Regular timer expired, both sides alive → enter overtime
+                if (combatTimer >= gameConfig.combatMaxDuration)
+                {
+                    isOvertime = true;
+                    overtimeTimer = 0f;
+                    Debug.Log("Combat entering overtime!");
+                }
+                return;
+            }
+
+            // Overtime expired, both sides still alive → draw
+            if (overtimeTimer >= gameConfig.combatOvertimeDuration)
+            {
+                combatActive = false;
+                isDraw = true;
+                Debug.Log("Overtime expired! Draw — both sides take damage.");
+                GameLoopManager.Instance?.EndCombat(true);
             }
         }
 

@@ -27,6 +27,15 @@ namespace AutoChess.Data
         public PlayerData lastOpponent = null;
         public int placement = 0; // final ranking (1 = first place)
 
+        // Milestone 4: Augments
+        public List<AugmentData> augments = new List<AugmentData>();
+        public int bonusGoldPerRound = 0;
+        public int bonusInterestCap = 0;
+        public int bonusShopSlots = 0;
+        public int freeRefreshPerRound = 0;
+        public int freeRefreshRemaining = 0;
+        public int bonusBenchSlots = 0;
+
         public bool IsAlive => health > 0;
 
         public PlayerData(string name, bool human, GameConfig config)
@@ -37,8 +46,8 @@ namespace AutoChess.Data
             gold = config.startingGold;
             level = config.startingLevel;
             exp = 0;
-            // EXP to reach NEXT level: index = current level
-            expToLevel = new int[] { 0, 0, 2, 4, 8, 12, 20, 32, 48, 80, 100 };
+            expToLevel = (int[])config.expCost.Clone();
+            CheckLevelUp(config);
             currentShop = new List<HeroData>();
             for (int i = 0; i < config.shopSlotCount; i++)
                 currentShop.Add(null);
@@ -82,7 +91,7 @@ namespace AutoChess.Data
 
         public int GetInterest(GameConfig config)
         {
-            return Mathf.Min(gold / 10, config.maxInterest);
+            return Mathf.Min(gold / 10, config.maxInterest + bonusInterestCap);
         }
     }
 }

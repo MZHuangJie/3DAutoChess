@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using AutoChess.Data;
+using AutoChess.UI;
 
 namespace AutoChess.Core
 {
@@ -31,8 +32,15 @@ namespace AutoChess.Core
             if (player == null) return;
             if (!free)
             {
-                if (player.gold < gameConfig.refreshCost) return;
-                player.gold -= gameConfig.refreshCost;
+                if (player.freeRefreshRemaining > 0)
+                {
+                    player.freeRefreshRemaining--;
+                }
+                else
+                {
+                    if (player.gold < gameConfig.refreshCost) return;
+                    player.gold -= gameConfig.refreshCost;
+                }
             }
 
             // Return current shop heroes to pool
@@ -42,8 +50,11 @@ namespace AutoChess.Core
                     heroPool.ReturnHero(hero);
             }
 
-            // Draw new heroes
-            for (int i = 0; i < gameConfig.shopSlotCount; i++)
+            // Draw new heroes (base + augment bonus slots)
+            int totalSlots = gameConfig.shopSlotCount + player.bonusShopSlots;
+            while (player.currentShop.Count < totalSlots)
+                player.currentShop.Add(null);
+            for (int i = 0; i < totalSlots; i++)
             {
                 player.currentShop[i] = heroPool.DrawHero(player.level);
             }
@@ -52,6 +63,10 @@ namespace AutoChess.Core
         public bool BuyHero(PlayerData player, int shopIndex)
         {
             if (player == null) return false;
+
+            // Round 1: no buying allowed
+            if (GameLoopManager.Instance != null && GameLoopManager.Instance.CurrentRound == 1) return false;
+
             if (shopIndex < 0 || shopIndex >= player.currentShop.Count) return false;
 
             var hero = player.currentShop[shopIndex];
@@ -96,9 +111,18 @@ namespace AutoChess.Core
             return true;
         }
 
-        public void SellPiece(ChessPiece piece)
+        public void SellPiece(ChessPiece piece, bool fromDrag = false)
         {
             if (piece == null || piece.owner == null) return;
+
+            // Round 1: no selling allowed
+            if (GameLoopManager.Instance != null && GameLoopManager.Instance.CurrentRound == 1) return;
+
+            if (!fromDrag)
+            {
+                var uiManager = Object.FindFirstObjectByType<UIManager>();
+                if (uiManager != null && !uiManager.IsShopExpanded) return;
+            }
 
             var player = piece.owner;
             int refund = piece.heroData.cost;
@@ -127,6 +151,9 @@ namespace AutoChess.Core
                 Destroy(piece.gameObject);
 
             Debug.Log($"Sold {piece.heroData.heroName} (⭐{piece.starLevel}) for {refund} gold.");
+
+            var uiMgr = Object.FindFirstObjectByType<UIManager>();
+            uiMgr?.UpdateUI();
         }
 
         public void ToggleShopLock(PlayerData player)

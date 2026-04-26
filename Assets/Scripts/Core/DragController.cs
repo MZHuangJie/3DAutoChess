@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using AutoChess.Data;
+using AutoChess.UI;
 
 namespace AutoChess.Core
 {
@@ -15,42 +17,97 @@ namespace AutoChess.Core
         private Vector3 originalPosition;
         private bool isDragging = false;
         private bool isSellMode = false;
-        private readonly float sellZoneScreenHeight = 0.15f;
+        private readonly float sellZoneWidth = 0.20f;
+        private readonly float sellZoneHeight = 0.30f;
+
+        // Move-to-drag state
+        private ChessPiece pendingPiece;
+        private Vector3 pendingOriginalPos;
+        private Vector3 pendingDragOffset;
+        private Vector3 mouseDownScreenPos;
+        private const float DragMoveThreshold = 5f;
 
         // Equipment drag state
         private EquipmentData draggedEquipment;
         private int draggedEquipmentIndex = -1;
         private bool isDraggingEquipment = false;
 
+        // Pending equipment (click vs drag)
+        private int pendingEquipmentIndex = -1;
+        private Vector3 pendingEquipmentMousePos;
+
         public bool IsDraggingEquipment => isDraggingEquipment;
         public EquipmentData DraggedEquipment => draggedEquipment;
 
-        public void StartEquipmentDrag(int inventoryIndex)
+        public void SetPendingEquipment(int inventoryIndex)
+        {
+            pendingEquipmentIndex = inventoryIndex;
+            pendingEquipmentMousePos = Input.mousePosition;
+        }
+
+        void StartEquipmentDragFromPending()
         {
             var human = GameLoopManager.Instance?.HumanPlayer;
-            if (human == null || inventoryIndex < 0 || inventoryIndex >= human.equipmentInventory.Count) return;
-
-            draggedEquipment = human.equipmentInventory[inventoryIndex];
-            draggedEquipmentIndex = inventoryIndex;
+            if (human == null || pendingEquipmentIndex < 0 || pendingEquipmentIndex >= human.equipmentInventory.Count)
+            {
+                pendingEquipmentIndex = -1;
+                return;
+            }
+            draggedEquipment = human.equipmentInventory[pendingEquipmentIndex];
+            draggedEquipmentIndex = pendingEquipmentIndex;
             isDraggingEquipment = true;
+            pendingEquipmentIndex = -1;
         }
 
         void Update()
         {
-            if (GameLoopManager.Instance != null && 
-                GameLoopManager.Instance.CurrentPhase != GamePhase.Preparation)
-                return;
+            bool isPreparation = GameLoopManager.Instance == null ||
+                                 GameLoopManager.Instance.CurrentPhase == GamePhase.Preparation;
 
-            // Right-click to sell piece under cursor
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(0) && !isDragging && !isDraggingEquipment && pendingEquipmentIndex < 0)
             {
-                TrySellUnderCursor();
+                if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+                    return;
+                mouseDownScreenPos = Input.mousePosition;
+                TryPendingPiece();
                 return;
             }
 
-            if (Input.GetMouseButtonDown(0))
+            // Equipment pending: move = drag, no move = show detail
+            if (Input.GetMouseButton(0) && pendingEquipmentIndex >= 0 && !isDraggingEquipment)
             {
-                TryStartDrag();
+                float dist = Vector3.Distance(Input.mousePosition, pendingEquipmentMousePos);
+                if (dist >= DragMoveThreshold)
+                {
+                    StartEquipmentDragFromPending();
+                }
+                return;
+            }
+            if (Input.GetMouseButtonUp(0) && pendingEquipmentIndex >= 0 && !isDraggingEquipment)
+            {
+                var human = GameLoopManager.Instance?.HumanPlayer;
+                if (human != null && pendingEquipmentIndex < human.equipmentInventory.Count)
+                {
+                    var uiMgr = Object.FindFirstObjectByType<UIManager>();
+                    uiMgr?.ShowEquipmentDetail(human.equipmentInventory[pendingEquipmentIndex]);
+                }
+                pendingEquipmentIndex = -1;
+                return;
+            }
+            if (Input.GetMouseButtonUp(0) && isDraggingEquipment)
+            {
+                EndEquipmentDrag();
+                return;
+            }
+
+            bool canDrag = pendingPiece != null && (isPreparation || pendingPiece.isOnBench);
+            if (Input.GetMouseButton(0) && pendingPiece != null && !isDragging && canDrag)
+            {
+                float dist = Vector3.Distance(Input.mousePosition, mouseDownScreenPos);
+                if (dist >= DragMoveThreshold)
+                {
+                    StartDragFromPending();
+                }
             }
             else if (Input.GetMouseButton(0) && isDragging)
             {
@@ -61,9 +118,16 @@ namespace AutoChess.Core
             {
                 EndDrag();
             }
-            else if (Input.GetMouseButtonUp(0) && isDraggingEquipment)
+            else if (Input.GetMouseButtonUp(0) && pendingPiece != null)
             {
-                EndEquipmentDrag();
+                var uiMgr = Object.FindFirstObjectByType<UIManager>();
+                uiMgr?.ShowPieceDetail(pendingPiece);
+                pendingPiece = null;
+            }
+
+            if (Input.GetMouseButtonDown(1) && isPreparation)
+            {
+                TrySellUnderCursor();
             }
         }
 
@@ -80,24 +144,22 @@ namespace AutoChess.Core
             }
         }
 
+        bool IsInSellZone()
+        {
+            float screenX = Input.mousePosition.x / Screen.width;
+            float screenY = Input.mousePosition.y / Screen.height;
+            return screenX < sellZoneWidth && screenY < sellZoneHeight;
+        }
+
         void CheckSellZone()
         {
             if (draggedPiece == null) return;
-            float screenY = Input.mousePosition.y / Screen.height;
-            isSellMode = screenY < sellZoneScreenHeight;
-            draggedPiece.SetHighlight(isSellMode ? false : true);
-            if (isSellMode)
-            {
-                // Visual feedback for sell
-                draggedPiece.SetSellHighlight(true);
-            }
-            else
-            {
-                draggedPiece.SetSellHighlight(false);
-            }
+            isSellMode = IsInSellZone();
+            draggedPiece.SetHighlight(!isSellMode);
+            draggedPiece.SetSellHighlight(isSellMode);
         }
 
-        void TryStartDrag()
+        void TryPendingPiece()
         {
             Ray ray = gameCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 100f, pieceLayer))
@@ -105,14 +167,28 @@ namespace AutoChess.Core
                 var piece = hit.collider.GetComponentInParent<ChessPiece>();
                 if (piece != null && piece.owner.isHuman && piece.IsAlive)
                 {
-                    draggedPiece = piece;
-                    originalPosition = draggedPiece.transform.position;
-                    dragOffset = draggedPiece.transform.position - hit.point;
-                    dragOffset.y = 0;
-                    isDragging = true;
-                    draggedPiece.SetHighlight(true);
+                    pendingPiece = piece;
+                    pendingOriginalPos = piece.transform.position;
+                    pendingDragOffset = piece.transform.position - hit.point;
+                    pendingDragOffset.y = 0;
                 }
             }
+            else
+            {
+                // Clicked empty area — hide detail panel
+                var uiMgr = Object.FindFirstObjectByType<UIManager>();
+                uiMgr?.HidePieceDetail();
+            }
+        }
+
+        void StartDragFromPending()
+        {
+            draggedPiece = pendingPiece;
+            originalPosition = pendingOriginalPos;
+            dragOffset = pendingDragOffset;
+            isDragging = true;
+            draggedPiece.SetHighlight(true);
+            pendingPiece = null;
         }
 
         void UpdateDrag()
@@ -120,7 +196,7 @@ namespace AutoChess.Core
             if (draggedPiece == null) return;
 
             Ray ray = gameCamera.ScreenPointToRay(Input.mousePosition);
-            Plane groundPlane = new Plane(Vector3.up, originalPosition);
+            Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
             if (groundPlane.Raycast(ray, out float enter))
             {
                 Vector3 hitPoint = ray.GetPoint(enter);
@@ -141,10 +217,9 @@ namespace AutoChess.Core
             bool wasOnBench = draggedPiece.isOnBench;
 
             // Check sell zone first
-            float screenY = Input.mousePosition.y / Screen.height;
-            if (screenY < sellZoneScreenHeight)
+            if (IsInSellZone())
             {
-                ShopManager.Instance?.SellPiece(draggedPiece);
+                ShopManager.Instance?.SellPiece(draggedPiece, true);
                 draggedPiece = null;
                 isDragging = false;
                 return;
@@ -152,16 +227,27 @@ namespace AutoChess.Core
 
             // First check board slots
             var boardSlot = boardManager.GetSlotAtWorldPosition(dropPos);
-            if (boardSlot != null && boardSlot.isPlayerSide && !boardSlot.IsOccupied)
+            if (boardSlot != null && boardSlot.isPlayerSide)
             {
-                if (wasOnBench && !ShopManager.Instance.CanPlaceOnBoard(player))
+                if (!boardSlot.IsOccupied)
                 {
-                    Debug.Log("Board full! Upgrade population to place more units.");
-                    draggedPiece.transform.position = originalPosition;
+                    if (wasOnBench && !ShopManager.Instance.CanPlaceOnBoard(player))
+                    {
+                        Debug.Log("Board full! Upgrade population to place more units.");
+                        draggedPiece.transform.position = originalPosition;
+                    }
+                    else
+                    {
+                        boardManager.PlacePiece(draggedPiece, boardSlot.gridPos.x, boardSlot.gridPos.y);
+                    }
+                }
+                else if (boardSlot.piece != null && boardSlot.piece != draggedPiece)
+                {
+                    boardManager.SwapPieces(draggedPiece, boardSlot.piece);
                 }
                 else
                 {
-                    boardManager.PlacePiece(draggedPiece, boardSlot.gridPos.x, boardSlot.gridPos.y);
+                    draggedPiece.transform.position = originalPosition;
                 }
             }
             else
@@ -171,11 +257,18 @@ namespace AutoChess.Core
                 {
                     boardManager.PlacePieceOnBench(draggedPiece, benchSlot.gridPos.y);
                 }
+                else if (benchSlot != null && benchSlot.piece != null && benchSlot.piece != draggedPiece)
+                {
+                    boardManager.SwapPieces(draggedPiece, benchSlot.piece);
+                }
                 else
                 {
                     draggedPiece.transform.position = originalPosition;
                 }
             }
+
+            var uiMgr = Object.FindFirstObjectByType<UIManager>();
+            uiMgr?.UpdateUI();
 
             draggedPiece = null;
             isDragging = false;
@@ -210,6 +303,9 @@ namespace AutoChess.Core
                     }
                 }
             }
+
+            var uiMgr = Object.FindFirstObjectByType<UIManager>();
+            uiMgr?.UpdateUI();
 
             isDraggingEquipment = false;
             draggedEquipment = null;

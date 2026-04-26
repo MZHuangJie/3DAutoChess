@@ -87,7 +87,7 @@ namespace AutoChess.Core
 
         public BoardSlot GetSlot(int row, int col)
         {
-            if (row < 0 || row >= rows || col < 0 || col >= cols) return null;
+            if (grid == null || row < 0 || row >= rows || col < 0 || col >= cols) return null;
             return grid[row, col];
         }
 
@@ -126,6 +126,7 @@ namespace AutoChess.Core
             piece.isOnBench = false;
             piece.benchIndex = -1;
             piece.transform.position = slot.worldPos;
+            piece.SetHealthBarVisible(true);
             return true;
         }
 
@@ -149,6 +150,7 @@ namespace AutoChess.Core
             piece.boardPosition = new Vector2Int(-1, benchIndex);
             piece.transform.position = slot.worldPos;
             piece.gameObject.SetActive(true);
+            piece.SetHealthBarVisible(false);
             Debug.Log($"[PlacePieceOnBench] {piece.heroData.heroName} -> bench[{benchIndex}] pos={slot.worldPos} active={piece.gameObject.activeSelf}");
             return true;
         }
@@ -165,6 +167,53 @@ namespace AutoChess.Core
                 var slot = GetSlot(piece.boardPosition.x, piece.boardPosition.y);
                 if (slot != null && slot.piece == piece) slot.piece = null;
             }
+        }
+
+        public void SwapPieces(ChessPiece a, ChessPiece b)
+        {
+            var posA = a.boardPosition;
+            var posB = b.boardPosition;
+            bool aOnBench = a.isOnBench;
+            bool bOnBench = b.isOnBench;
+            int benchA = a.benchIndex;
+            int benchB = b.benchIndex;
+
+            RemovePieceFromAnywhere(a);
+            RemovePieceFromAnywhere(b);
+
+            if (bOnBench)
+                PlacePieceOnBenchForce(a, benchB);
+            else
+                PlacePiece(a, posB.x, posB.y);
+
+            if (aOnBench)
+                PlacePieceOnBenchForce(b, benchA);
+            else
+                PlacePiece(b, posA.x, posA.y);
+        }
+
+        private bool PlacePieceOnBenchForce(ChessPiece piece, int benchIndex)
+        {
+            var slot = GetBenchSlot(benchIndex);
+            if (slot == null) return false;
+
+            RemovePieceFromAnywhere(piece);
+
+            if (piece.owner != null)
+            {
+                piece.owner.boardPieces.Remove(piece);
+                if (!piece.owner.benchPieces.Contains(piece))
+                    piece.owner.benchPieces.Add(piece);
+            }
+
+            slot.piece = piece;
+            piece.boardPosition = new Vector2Int(-1, benchIndex);
+            piece.isOnBench = true;
+            piece.benchIndex = benchIndex;
+            piece.transform.position = slot.worldPos;
+            piece.gameObject.SetActive(true);
+            piece.SetHealthBarVisible(false);
+            return true;
         }
 
         public BoardSlot GetSlotAtWorldPosition(Vector3 worldPos)

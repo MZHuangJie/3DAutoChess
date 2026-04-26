@@ -29,6 +29,13 @@ namespace AutoChess.Core
                 else
                     combinedEquipment.Add(eq);
             }
+            int validRecipes = 0;
+            foreach (var c in combinedEquipment)
+            {
+                if (c.recipe1 != null && c.recipe2 != null) validRecipes++;
+                else Debug.LogWarning($"[Equipment] {c.equipmentName} missing recipe: r1={c.recipe1?.equipmentName ?? "NULL"}, r2={c.recipe2?.equipmentName ?? "NULL"}");
+            }
+            Debug.Log($"[Equipment] Setup: {baseEquipment.Count} base, {combinedEquipment.Count} combined, {validRecipes} with valid recipes");
         }
 
         public bool EquipItem(ChessPiece piece, EquipmentData item, PlayerData owner)
@@ -71,11 +78,16 @@ namespace AutoChess.Core
         {
             foreach (var combined in combinedEquipment)
             {
-                if (combined.recipe1 == null || combined.recipe2 == null) continue;
+                if (combined.recipe1 == null || combined.recipe2 == null)
+                {
+                    Debug.LogWarning($"[Equipment] {combined.equipmentName} has null recipe: r1={combined.recipe1}, r2={combined.recipe2}");
+                    continue;
+                }
                 if ((combined.recipe1 == a && combined.recipe2 == b) ||
                     (combined.recipe1 == b && combined.recipe2 == a))
                     return combined;
             }
+            Debug.Log($"[Equipment] No combine found for {a.equipmentName} + {b.equipmentName}");
             return null;
         }
 
