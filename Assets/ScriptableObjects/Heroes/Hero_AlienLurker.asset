@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
+  m_Name: Hero_AlienLurker
+  m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
+  heroName: "异形潜伏者"
+  cost: 2
+  displayColor: {r: 0.2, g: 0.4, b: 0.2, a: 1}
+  maxHealth: 600
+  attackDamage: 80
+  attackSpeed: 0.9
+  armor: 20
+  magicResist: 20
+  attackRange: 1
+  maxMana: 80
+  startingMana: 0
+  attackType: 0
+  factions:
+  - "异形"
+  - "武术"
+  skillName: "尾刺穿刺"
+  skillType: 1
+  skillTargetType: 0
+  skillDamage: 200
+  skillRange: 2
+  skillStunDuration: 0
+  skillIsMagic: 0

@@ -12,26 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c736d37305d710b4f91f5ba7ef28d4c7, type: 3}
   m_Name: Round1_Beetles
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.CreepRoundData
-  roundName: "\u77F3\u7532\u866B"
+  roundName: "丧尸"
   creeps:
-  - creepName: "\u77F3\u7532\u866B"
+  - creepName: "丧尸"
     health: 200
     attackDamage: 20
     armor: 5
     attackSpeed: 0.5
-    color: {r: 0.5, g: 0.4, b: 0.3, a: 1}
-  - creepName: "\u77F3\u7532\u866B"
+    color: {r: 0.4, g: 0.5, b: 0.3, a: 1}
+  - creepName: "丧尸"
     health: 200
     attackDamage: 20
     armor: 5
     attackSpeed: 0.5
-    color: {r: 0.5, g: 0.4, b: 0.3, a: 1}
-  - creepName: "\u77F3\u7532\u866B"
+    color: {r: 0.4, g: 0.5, b: 0.3, a: 1}
+  - creepName: "丧尸"
     health: 200
     attackDamage: 20
     armor: 5
     attackSpeed: 0.5
-    color: {r: 0.5, g: 0.4, b: 0.3, a: 1}
+    color: {r: 0.4, g: 0.5, b: 0.3, a: 1}
   goldReward: 1
   equipmentDropCount: 1
   dropCombinedEquipment: 0

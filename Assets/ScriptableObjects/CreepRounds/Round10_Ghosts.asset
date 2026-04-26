@@ -12,32 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c736d37305d710b4f91f5ba7ef28d4c7, type: 3}
   m_Name: Round10_Ghosts
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.CreepRoundData
-  roundName: "\u5E7D\u7075"
+  roundName: "抱脸体"
   creeps:
-  - creepName: "\u5E7D\u7075"
+  - creepName: "抱脸体"
     health: 500
     attackDamage: 45
     armor: 10
     attackSpeed: 0.65
-    color: {r: 0.6, g: 0.7, b: 0.9, a: 1}
-  - creepName: "\u5E7D\u7075"
+    color: {r: 0.3, g: 0.4, b: 0.3, a: 1}
+  - creepName: "抱脸体"
     health: 500
     attackDamage: 45
     armor: 10
     attackSpeed: 0.65
-    color: {r: 0.6, g: 0.7, b: 0.9, a: 1}
-  - creepName: "\u5E7D\u7075"
+    color: {r: 0.3, g: 0.4, b: 0.3, a: 1}
+  - creepName: "抱脸体"
     health: 500
     attackDamage: 45
     armor: 10
     attackSpeed: 0.65
-    color: {r: 0.6, g: 0.7, b: 0.9, a: 1}
-  - creepName: "\u5E7D\u7075"
+    color: {r: 0.3, g: 0.4, b: 0.3, a: 1}
+  - creepName: "抱脸体"
     health: 500
     attackDamage: 45
     armor: 10
     attackSpeed: 0.65
-    color: {r: 0.6, g: 0.7, b: 0.9, a: 1}
+    color: {r: 0.3, g: 0.4, b: 0.3, a: 1}
   goldReward: 2
   equipmentDropCount: 2
   dropCombinedEquipment: 0

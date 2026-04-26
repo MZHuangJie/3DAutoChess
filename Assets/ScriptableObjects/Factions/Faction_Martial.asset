@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb0c46330af41cf418dfd7c1dea1111f, type: 3}
+  m_Name: Faction_Martial
+  m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.FactionData
+  factionName: "武术"
+  factionColor: {r: 0.9, g: 0.5, b: 0.1, a: 1}
+  thresholds:
+  - count: 2
+    description: "武术+15攻击/+10护甲"
+    healthBonus: 0
+    attackBonus: 15
+    attackSpeedBonus: 0
+    armorBonus: 10
+    magicResistBonus: 0
+  - count: 4
+    description: "武术+40攻击/+25护甲/+10%攻速"
+    healthBonus: 0
+    attackBonus: 40
+    attackSpeedBonus: 0.1
+    armorBonus: 25
+    magicResistBonus: 0

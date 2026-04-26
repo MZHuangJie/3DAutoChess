@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
+  m_Name: Hero_Gandalf
+  m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
+  heroName: "甘道夫"
+  cost: 4
+  displayColor: {r: 0.9, g: 0.9, b: 0.9, a: 1}
+  maxHealth: 700
+  attackDamage: 60
+  attackSpeed: 0.55
+  armor: 30
+  magicResist: 40
+  attackRange: 3
+  maxMana: 90
+  startingMana: 20
+  attackType: 1
+  factions:
+  - "指环王"
+  - "修真"
+  skillName: "你不可通过"
+  skillType: 2
+  skillTargetType: 3
+  skillDamage: 200
+  skillRange: 3
+  skillStunDuration: 0
+  skillIsMagic: 1

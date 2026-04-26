@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
+  m_Name: Hero_CopyChuXuan
+  m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
+  heroName: "复制体楚轩"
+  cost: 5
+  displayColor: {r: 0.3, g: 0, b: 0.4, a: 1}
+  maxHealth: 650
+  attackDamage: 40
+  attackSpeed: 0.5
+  armor: 20
+  magicResist: 40
+  attackRange: 5
+  maxMana: 120
+  startingMana: 40
+  attackType: 1
+  factions:
+  - "魔鬼队"
+  - "精神力"
+  - "原暗·因果律武器"
+  skillName: "因果律攻击"
+  skillType: 1
+  skillTargetType: 0
+  skillDamage: 400
+  skillRange: 2
+  skillStunDuration: 0
+  skillIsMagic: 1

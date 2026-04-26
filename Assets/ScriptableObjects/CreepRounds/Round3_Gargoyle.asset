@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c736d37305d710b4f91f5ba7ef28d4c7, type: 3}
   m_Name: Round3_Gargoyle
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.CreepRoundData
-  roundName: "\u77F3\u50CF\u9B3C"
+  roundName: "猎犬"
   creeps:
-  - creepName: "\u77F3\u50CF\u9B3C"
+  - creepName: "猎犬"
     health: 800
     attackDamage: 50
     armor: 25
     attackSpeed: 0.6
-    color: {r: 0.35, g: 0.35, b: 0.4, a: 1}
+    color: {r: 0.3, g: 0.3, b: 0.35, a: 1}
   goldReward: 2
   equipmentDropCount: 1
   dropCombinedEquipment: 0
