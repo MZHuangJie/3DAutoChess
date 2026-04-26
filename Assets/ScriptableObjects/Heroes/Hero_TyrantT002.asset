@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
   m_Name: Hero_TyrantT002
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
-  heroName: "暴君T-002"
+  heroName: "\u66B4\u541BT-002"
   cost: 2
-  displayColor: {r: 0.6, g: 0.2, b: 0.2, a: 1}
+  displayColor: {r: 0.7, g: 0.3, b: 0.2, a: 1}
   maxHealth: 850
   attackDamage: 55
   attackSpeed: 0.5
@@ -24,10 +24,12 @@ MonoBehaviour:
   maxMana: 120
   startingMana: 30
   attackType: 0
+  modelPrefab: {fileID: 0}
+  modelScale: 1
   factions:
-  - "生化危机"
-  - "血族"
-  skillName: "暴怒冲锋"
+  - "\u751F\u5316\u5371\u673A"
+  - "\u8840\u65CF"
+  skillName: "\u66B4\u6012\u51B2\u950B"
   skillType: 4
   skillTargetType: 0
   skillDamage: 60

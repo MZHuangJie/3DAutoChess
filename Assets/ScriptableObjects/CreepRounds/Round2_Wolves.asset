@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c736d37305d710b4f91f5ba7ef28d4c7, type: 3}
   m_Name: Round2_Wolves
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.CreepRoundData
-  roundName: "舔食者"
+  roundName: "\u8214\u98DF\u8005"
   creeps:
-  - creepName: "舔食者"
+  - creepName: "\u8214\u98DF\u8005"
     health: 350
     attackDamage: 35
     armor: 10
     attackSpeed: 0.7
     color: {r: 0.6, g: 0.2, b: 0.2, a: 1}
-  - creepName: "舔食者"
+  - creepName: "\u8214\u98DF\u8005"
     health: 350
     attackDamage: 35
     armor: 10
     attackSpeed: 0.7
     color: {r: 0.6, g: 0.2, b: 0.2, a: 1}
-  - creepName: "舔食者"
+  - creepName: "\u8214\u98DF\u8005"
     health: 350
     attackDamage: 35
     armor: 10

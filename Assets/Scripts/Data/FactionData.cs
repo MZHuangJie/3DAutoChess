@@ -10,6 +10,8 @@ namespace AutoChess.Data
         public int healthBonus;
         public int attackBonus;
         public float attackSpeedBonus;
+        public int armorBonus;
+        public int magicResistBonus;
     }
 
     [CreateAssetMenu(fileName = "FactionData", menuName = "AutoChess/FactionData")]

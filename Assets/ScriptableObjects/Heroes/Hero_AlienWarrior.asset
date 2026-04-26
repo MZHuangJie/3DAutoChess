@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
   m_Name: Hero_AlienWarrior
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
-  heroName: "异形战士"
+  heroName: "\u5F02\u5F62\u6218\u58EB"
   cost: 3
-  displayColor: {r: 0.2, g: 0.3, b: 0.2, a: 1}
+  displayColor: {r: 0.3, g: 0.6, b: 0.3, a: 1}
   maxHealth: 800
   attackDamage: 65
   attackSpeed: 0.65
@@ -24,10 +24,12 @@ MonoBehaviour:
   maxMana: 100
   startingMana: 50
   attackType: 0
+  modelPrefab: {fileID: 0}
+  modelScale: 1
   factions:
-  - "异形"
-  - "血族"
-  skillName: "酸血喷射"
+  - "\u5F02\u5F62"
+  - "\u8840\u65CF"
+  skillName: "\u9178\u8840\u55B7\u5C04"
   skillType: 2
   skillTargetType: 3
   skillDamage: 120

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
   m_Name: Hero_ZhengZha
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
-  heroName: "郑吒"
+  heroName: "\u90D1\u5412"
   cost: 5
   displayColor: {r: 1, g: 0.4, b: 0.1, a: 1}
   maxHealth: 1000
@@ -24,11 +24,13 @@ MonoBehaviour:
   maxMana: 80
   startingMana: 0
   attackType: 0
+  modelPrefab: {fileID: 0}
+  modelScale: 1
   factions:
-  - "中洲队"
-  - "血族"
-  - "洪荒·开天辟地"
-  skillName: "暗焰斩"
+  - "\u4E2D\u6D32\u961F"
+  - "\u8840\u65CF"
+  - "\u6D2A\u8352\xB7\u5F00\u5929\u8F9F\u5730"
+  skillName: "\u6697\u7130\u65A9"
   skillType: 2
   skillTargetType: 3
   skillDamage: 300

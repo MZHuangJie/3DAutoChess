@@ -5,5 +5,6 @@ namespace AutoChess.Data
         public HeroData heroData;
         public EquipmentData equipmentData;
         public bool picked = false;
+        public string pickedByName = "";
     }
 }

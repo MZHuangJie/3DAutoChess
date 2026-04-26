@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
   m_Name: Hero_Ling
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
-  heroName: "零"
+  heroName: "\u96F6"
   cost: 4
   displayColor: {r: 0.6, g: 0.2, b: 0.8, a: 1}
   maxHealth: 600
@@ -24,10 +24,12 @@ MonoBehaviour:
   maxMana: 80
   startingMana: 0
   attackType: 1
+  modelPrefab: {fileID: 0}
+  modelScale: 1
   factions:
-  - "中洲队"
-  - "精神力"
-  skillName: "精神风暴"
+  - "\u4E2D\u6D32\u961F"
+  - "\u7CBE\u795E\u529B"
+  skillName: "\u7CBE\u795E\u98CE\u66B4"
   skillType: 4
   skillTargetType: 3
   skillDamage: 100

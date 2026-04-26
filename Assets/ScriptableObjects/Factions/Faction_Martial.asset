@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0c46330af41cf418dfd7c1dea1111f, type: 3}
   m_Name: Faction_Martial
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.FactionData
-  factionName: "武术"
+  factionName: "\u6B66\u672F"
   factionColor: {r: 0.9, g: 0.5, b: 0.1, a: 1}
   thresholds:
   - count: 2
-    description: "武术+15攻击/+10护甲"
+    description: "\u6B66\u672F+15\u653B\u51FB/+10\u62A4\u7532"
     healthBonus: 0
     attackBonus: 15
     attackSpeedBonus: 0
     armorBonus: 10
     magicResistBonus: 0
   - count: 4
-    description: "武术+40攻击/+25护甲/+10%攻速"
+    description: "\u6B66\u672F+40\u653B\u51FB/+25\u62A4\u7532/+10%\u653B\u901F"
     healthBonus: 0
     attackBonus: 40
     attackSpeedBonus: 0.1

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
   m_Name: Hero_Hobbit
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
-  heroName: "哈比人"
+  heroName: "\u54C8\u6BD4\u4EBA"
   cost: 1
-  displayColor: {r: 0.6, g: 0.8, b: 0.4, a: 1}
+  displayColor: {r: 0.9, g: 0.8, b: 0.2, a: 1}
   maxHealth: 500
   attackDamage: 40
   attackSpeed: 0.6
@@ -24,10 +24,12 @@ MonoBehaviour:
   maxMana: 100
   startingMana: 0
   attackType: 1
+  modelPrefab: {fileID: 0}
+  modelScale: 1
   factions:
-  - "指环王"
-  - "修真"
-  skillName: "星光瓶"
+  - "\u6307\u73AF\u738B"
+  - "\u4FEE\u771F"
+  skillName: "\u661F\u5149\u74F6"
   skillType: 3
   skillTargetType: 1
   skillDamage: 120

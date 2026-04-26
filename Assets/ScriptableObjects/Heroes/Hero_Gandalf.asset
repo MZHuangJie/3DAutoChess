@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
   m_Name: Hero_Gandalf
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
-  heroName: "甘道夫"
+  heroName: "\u7518\u9053\u592B"
   cost: 4
-  displayColor: {r: 0.9, g: 0.9, b: 0.9, a: 1}
+  displayColor: {r: 0.9, g: 0.8, b: 0.2, a: 1}
   maxHealth: 700
   attackDamage: 60
   attackSpeed: 0.55
@@ -24,10 +24,12 @@ MonoBehaviour:
   maxMana: 90
   startingMana: 20
   attackType: 1
+  modelPrefab: {fileID: 0}
+  modelScale: 1
   factions:
-  - "指环王"
-  - "修真"
-  skillName: "你不可通过"
+  - "\u6307\u73AF\u738B"
+  - "\u4FEE\u771F"
+  skillName: "\u4F60\u4E0D\u53EF\u901A\u8FC7"
   skillType: 2
   skillTargetType: 3
   skillDamage: 200

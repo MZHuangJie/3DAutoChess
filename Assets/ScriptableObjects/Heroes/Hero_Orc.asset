@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
   m_Name: Hero_Orc
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
-  heroName: "半兽人"
+  heroName: "\u534A\u517D\u4EBA"
   cost: 1
   displayColor: {r: 0.9, g: 0.8, b: 0.2, a: 1}
   maxHealth: 800
@@ -24,10 +24,12 @@ MonoBehaviour:
   maxMana: 150
   startingMana: 50
   attackType: 0
+  modelPrefab: {fileID: 0}
+  modelScale: 1
   factions:
-  - "指环王"
-  - "血族"
-  skillName: "战吼"
+  - "\u6307\u73AF\u738B"
+  - "\u8840\u65CF"
+  skillName: "\u6218\u543C"
   skillType: 4
   skillTargetType: 0
   skillDamage: 40

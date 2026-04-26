@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0c46330af41cf418dfd7c1dea1111f, type: 3}
   m_Name: Faction_Honghuang
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.FactionData
-  factionName: "洪荒·开天辟地"
+  factionName: "\u6D2A\u8352\xB7\u5F00\u5929\u8F9F\u5730"
   factionColor: {r: 1, g: 0.4, b: 0.1, a: 1}
   thresholds:
   - count: 1
-    description: "洪荒·开天辟地: +50攻击/+300HP/+20护甲"
+    description: "\u6D2A\u8352\xB7\u5F00\u5929\u8F9F\u5730: +50\u653B\u51FB/+300HP/+20\u62A4\u7532"
     healthBonus: 300
     attackBonus: 50
     attackSpeedBonus: 0

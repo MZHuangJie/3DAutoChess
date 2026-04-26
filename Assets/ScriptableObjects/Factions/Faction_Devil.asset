@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0c46330af41cf418dfd7c1dea1111f, type: 3}
   m_Name: Faction_Devil
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.FactionData
-  factionName: "魔鬼队"
+  factionName: "\u9B54\u9B3C\u961F"
   factionColor: {r: 0.6, g: 0.1, b: 0.1, a: 1}
   thresholds:
   - count: 2
-    description: "魔鬼队+25攻击/+10%攻速"
+    description: "\u9B54\u9B3C\u961F+25\u653B\u51FB/+10%\u653B\u901F"
     healthBonus: 0
     attackBonus: 25
     attackSpeedBonus: 0.1
     armorBonus: 0
     magicResistBonus: 0
   - count: 4
-    description: "魔鬼队+60攻击/+25%攻速"
+    description: "\u9B54\u9B3C\u961F+60\u653B\u51FB/+25%\u653B\u901F"
     healthBonus: 0
     attackBonus: 60
     attackSpeedBonus: 0.25

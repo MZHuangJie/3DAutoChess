@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
   m_Name: Hero_ZombieSoldier
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
-  heroName: "丧尸步兵"
+  heroName: "\u4E27\u5C38\u6B65\u5175"
   cost: 1
-  displayColor: {r: 0.4, g: 0.5, b: 0.3, a: 1}
+  displayColor: {r: 0.7, g: 0.3, b: 0.2, a: 1}
   maxHealth: 750
   attackDamage: 50
   attackSpeed: 0.55
@@ -24,10 +24,12 @@ MonoBehaviour:
   maxMana: 120
   startingMana: 0
   attackType: 0
+  modelPrefab: {fileID: 0}
+  modelScale: 1
   factions:
-  - "生化危机"
-  - "血族"
-  skillName: "撕咬"
+  - "\u751F\u5316\u5371\u673A"
+  - "\u8840\u65CF"
+  skillName: "\u6495\u54AC"
   skillType: 1
   skillTargetType: 0
   skillDamage: 120

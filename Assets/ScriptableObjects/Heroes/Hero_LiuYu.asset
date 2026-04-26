@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
   m_Name: Hero_LiuYu
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
-  heroName: "刘宇"
+  heroName: "\u5218\u5B87"
   cost: 2
   displayColor: {r: 0.4, g: 0.3, b: 0.9, a: 1}
   maxHealth: 550
@@ -24,10 +24,12 @@ MonoBehaviour:
   maxMana: 70
   startingMana: 0
   attackType: 1
+  modelPrefab: {fileID: 0}
+  modelScale: 1
   factions:
-  - "中洲队"
-  - "修真"
-  skillName: "御剑术"
+  - "\u4E2D\u6D32\u961F"
+  - "\u4FEE\u771F"
+  skillName: "\u5FA1\u5251\u672F"
   skillType: 2
   skillTargetType: 3
   skillDamage: 90

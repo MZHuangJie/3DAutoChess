@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0c46330af41cf418dfd7c1dea1111f, type: 3}
   m_Name: Faction_RE
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.FactionData
-  factionName: "生化危机"
+  factionName: "\u751F\u5316\u5371\u673A"
   factionColor: {r: 0.7, g: 0.3, b: 0.2, a: 1}
   thresholds:
   - count: 2
-    description: "生化危机+15攻击/+200HP"
+    description: "\u751F\u5316\u5371\u673A+15\u653B\u51FB/+200HP"
     healthBonus: 200
     attackBonus: 15
     attackSpeedBonus: 0
     armorBonus: 0
     magicResistBonus: 0
   - count: 4
-    description: "生化危机+35攻击/+400HP"
+    description: "\u751F\u5316\u5371\u673A+35\u653B\u51FB/+400HP"
     healthBonus: 400
     attackBonus: 35
     attackSpeedBonus: 0

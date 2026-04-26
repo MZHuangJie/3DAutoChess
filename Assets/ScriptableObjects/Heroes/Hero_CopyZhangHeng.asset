@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
   m_Name: Hero_CopyZhangHeng
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
-  heroName: "复制体张恒"
+  heroName: "\u590D\u5236\u4F53\u5F20\u6052"
   cost: 4
-  displayColor: {r: 0.4, g: 0.1, b: 0.1, a: 1}
+  displayColor: {r: 0.6, g: 0.1, b: 0.1, a: 1}
   maxHealth: 550
   attackDamage: 90
   attackSpeed: 0.75
@@ -24,10 +24,12 @@ MonoBehaviour:
   maxMana: 80
   startingMana: 0
   attackType: 1
+  modelPrefab: {fileID: 0}
+  modelScale: 1
   factions:
-  - "魔鬼队"
-  - "科技"
-  skillName: "暗能狙击"
+  - "\u9B54\u9B3C\u961F"
+  - "\u79D1\u6280"
+  skillName: "\u6697\u80FD\u72D9\u51FB"
   skillType: 1
   skillTargetType: 0
   skillDamage: 350

@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0c46330af41cf418dfd7c1dea1111f, type: 3}
   m_Name: Faction_Alien
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.FactionData
-  factionName: "异形"
+  factionName: "\u5F02\u5F62"
   factionColor: {r: 0.3, g: 0.6, b: 0.3, a: 1}
   thresholds:
   - count: 2
-    description: "异形+200HP/+10%攻速"
+    description: "\u5F02\u5F62+200HP/+10%\u653B\u901F"
     healthBonus: 200
     attackBonus: 0
     attackSpeedBonus: 0.1
     armorBonus: 0
     magicResistBonus: 0
   - count: 4
-    description: "异形+400HP/+20%攻速/+15护甲"
+    description: "\u5F02\u5F62+400HP/+20%\u653B\u901F/+15\u62A4\u7532"
     healthBonus: 400
     attackBonus: 0
     attackSpeedBonus: 0.2

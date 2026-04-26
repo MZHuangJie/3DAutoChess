@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
   m_Name: Hero_CopyYingkong
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
-  heroName: "复制体樱空"
+  heroName: "\u590D\u5236\u4F53\u6A31\u7A7A"
   cost: 3
-  displayColor: {r: 0.5, g: 0.1, b: 0.1, a: 1}
+  displayColor: {r: 0.6, g: 0.1, b: 0.1, a: 1}
   maxHealth: 650
   attackDamage: 95
   attackSpeed: 0.9
@@ -24,10 +24,12 @@ MonoBehaviour:
   maxMana: 50
   startingMana: 0
   attackType: 0
+  modelPrefab: {fileID: 0}
+  modelScale: 1
   factions:
-  - "魔鬼队"
-  - "武术"
-  skillName: "嗜血之舞"
+  - "\u9B54\u9B3C\u961F"
+  - "\u6B66\u672F"
+  skillName: "\u55DC\u8840\u4E4B\u821E"
   skillType: 1
   skillTargetType: 0
   skillDamage: 250

@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0c46330af41cf418dfd7c1dea1111f, type: 3}
   m_Name: Faction_Psychic
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.FactionData
-  factionName: "精神力"
+  factionName: "\u7CBE\u795E\u529B"
   factionColor: {r: 0.6, g: 0.2, b: 0.8, a: 1}
   thresholds:
   - count: 2
-    description: "精神力+25魔抗/+100HP"
+    description: "\u7CBE\u795E\u529B+25\u9B54\u6297/+100HP"
     healthBonus: 100
     attackBonus: 0
     attackSpeedBonus: 0
     armorBonus: 0
     magicResistBonus: 25
   - count: 4
-    description: "精神力+50魔抗/+250HP"
+    description: "\u7CBE\u795E\u529B+50\u9B54\u6297/+250HP"
     healthBonus: 250
     attackBonus: 0
     attackSpeedBonus: 0

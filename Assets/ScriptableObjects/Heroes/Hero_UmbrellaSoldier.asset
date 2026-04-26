@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
   m_Name: Hero_UmbrellaSoldier
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
-  heroName: "安布雷拉士兵"
+  heroName: "\u5B89\u5E03\u96F7\u62C9\u58EB\u5175"
   cost: 1
   displayColor: {r: 0.7, g: 0.3, b: 0.2, a: 1}
   maxHealth: 450
@@ -24,10 +24,12 @@ MonoBehaviour:
   maxMana: 90
   startingMana: 0
   attackType: 1
+  modelPrefab: {fileID: 0}
+  modelScale: 1
   factions:
-  - "生化危机"
-  - "科技"
-  skillName: "扫射"
+  - "\u751F\u5316\u5371\u673A"
+  - "\u79D1\u6280"
+  skillName: "\u626B\u5C04"
   skillType: 2
   skillTargetType: 3
   skillDamage: 70

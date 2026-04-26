@@ -12,27 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c736d37305d710b4f91f5ba7ef28d4c7, type: 3}
   m_Name: Round10_Ghosts
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.CreepRoundData
-  roundName: "抱脸体"
+  roundName: "\u62B1\u8138\u4F53"
   creeps:
-  - creepName: "抱脸体"
+  - creepName: "\u62B1\u8138\u4F53"
     health: 500
     attackDamage: 45
     armor: 10
     attackSpeed: 0.65
     color: {r: 0.3, g: 0.4, b: 0.3, a: 1}
-  - creepName: "抱脸体"
+  - creepName: "\u62B1\u8138\u4F53"
     health: 500
     attackDamage: 45
     armor: 10
     attackSpeed: 0.65
     color: {r: 0.3, g: 0.4, b: 0.3, a: 1}
-  - creepName: "抱脸体"
+  - creepName: "\u62B1\u8138\u4F53"
     health: 500
     attackDamage: 45
     armor: 10
     attackSpeed: 0.65
     color: {r: 0.3, g: 0.4, b: 0.3, a: 1}
-  - creepName: "抱脸体"
+  - creepName: "\u62B1\u8138\u4F53"
     health: 500
     attackDamage: 45
     armor: 10

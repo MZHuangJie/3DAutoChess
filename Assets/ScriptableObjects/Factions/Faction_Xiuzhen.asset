@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0c46330af41cf418dfd7c1dea1111f, type: 3}
   m_Name: Faction_Xiuzhen
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.FactionData
-  factionName: "修真"
+  factionName: "\u4FEE\u771F"
   factionColor: {r: 0.4, g: 0.3, b: 0.9, a: 1}
   thresholds:
   - count: 2
-    description: "修真+30魔抗/+15攻击"
+    description: "\u4FEE\u771F+30\u9B54\u6297/+15\u653B\u51FB"
     healthBonus: 0
     attackBonus: 15
     attackSpeedBonus: 0
     armorBonus: 0
     magicResistBonus: 30
   - count: 4
-    description: "修真+60魔抗/+40攻击"
+    description: "\u4FEE\u771F+60\u9B54\u6297/+40\u653B\u51FB"
     healthBonus: 0
     attackBonus: 40
     attackSpeedBonus: 0

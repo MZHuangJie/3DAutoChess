@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0c46330af41cf418dfd7c1dea1111f, type: 3}
   m_Name: Faction_Causal
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.FactionData
-  factionName: "原暗·因果律武器"
+  factionName: "\u539F\u6697\xB7\u56E0\u679C\u5F8B\u6B66\u5668"
   factionColor: {r: 0.3, g: 0, b: 0.4, a: 1}
   thresholds:
   - count: 1
-    description: "原暗·因果律武器: +20攻击/+300HP/+30魔抗"
+    description: "\u539F\u6697\xB7\u56E0\u679C\u5F8B\u6B66\u5668: +20\u653B\u51FB/+300HP/+30\u9B54\u6297"
     healthBonus: 300
     attackBonus: 20
     attackSpeedBonus: 0

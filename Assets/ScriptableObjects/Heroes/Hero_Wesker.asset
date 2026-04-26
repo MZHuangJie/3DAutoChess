@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
   m_Name: Hero_Wesker
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
-  heroName: "威斯克"
+  heroName: "\u5A01\u65AF\u514B"
   cost: 4
-  displayColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+  displayColor: {r: 0.7, g: 0.3, b: 0.2, a: 1}
   maxHealth: 750
   attackDamage: 85
   attackSpeed: 0.8
@@ -24,10 +24,12 @@ MonoBehaviour:
   maxMana: 70
   startingMana: 0
   attackType: 0
+  modelPrefab: {fileID: 0}
+  modelScale: 1
   factions:
-  - "生化危机"
-  - "科技"
-  skillName: "闪现突击"
+  - "\u751F\u5316\u5371\u673A"
+  - "\u79D1\u6280"
+  skillName: "\u95EA\u73B0\u7A81\u51FB"
   skillType: 1
   skillTargetType: 0
   skillDamage: 300

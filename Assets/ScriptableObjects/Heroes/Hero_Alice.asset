@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
   m_Name: Hero_Alice
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
-  heroName: "艾丽丝"
+  heroName: "\u827E\u4E3D\u4E1D"
   cost: 3
   displayColor: {r: 0.7, g: 0.3, b: 0.2, a: 1}
   maxHealth: 700
@@ -24,10 +24,12 @@ MonoBehaviour:
   maxMana: 60
   startingMana: 0
   attackType: 0
+  modelPrefab: {fileID: 919132149155446097, guid: 4eea11811b9caea4eb6b63d72f38ad96, type: 3}
+  modelScale: 0.01
   factions:
-  - "生化危机"
-  - "血族"
-  skillName: "T病毒强化"
+  - "\u751F\u5316\u5371\u673A"
+  - "\u8840\u65CF"
+  skillName: "T\u75C5\u6BD2\u5F3A\u5316"
   skillType: 1
   skillTargetType: 0
   skillDamage: 180

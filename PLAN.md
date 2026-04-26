@@ -216,6 +216,25 @@
 - [x] 卖出价格按星级计算（1星=cost, 2星=cost×3, 3星=cost×9）
 - [x] 美术资源目录结构创建 + 完整替换清单文档
 
+### 里程碑 4 后续重构与修复
+- [x] partial class 拆分：UIManager (2203行→11文件)、GameLoopManager (968行→7文件)、ChessPiece (608行→5文件)
+- [x] 按模块整理文件夹：Core/ 拆分为 Board/、Combat/、Economy/、GameLoop/、Piece/、Synergy/、Camera/ 共 9 个模块目录
+- [x] FBX 模型支持：HeroData 新增 modelPrefab / modelScale / modelYOffset，Initialize 自动替换胶囊体、生成 Collider、递归设置 Layer
+- [x] 装备合成修复：槽位满时基础装备无法合成 → 先检查合成配方再检查槽位
+- [x] 选秀轮标题修复：非人类波次也显示"选择一个英雄" → 区分人类可选/等待状态
+- [x] 对战记录面板修复：位置移到玩家信息面板正下方，logText 加 ContentSizeFitter
+- [x] 商店 toggle 按钮偏移修复：展开时 Y 坐标 140→100 与面板高度一致
+- [x] FBX 模型 Collider 修复：BoxCollider bounds 计算异常 → 改用固定 CapsuleCollider
+- [x] FBX 模型材质保护：有自定义模型时不再用 displayColor 覆盖材质
+
+### 里程碑 4.5：海克斯展示 & Bug 修复
+*目标：让玩家能看到自己和对手选了什么海克斯天赋，修复已知 bug。*
+
+- [ ] 在玩家信息面板中显示当前已选海克斯天赋（名称/描述）
+- [ ] 在对战排名/玩家列表中显示每个玩家的海克斯天赋
+- [ ] 海克斯天赋悬浮提示（hover 显示详细效果描述）
+- [ ] 排查并修复已知 UI/游戏逻辑 bug
+
 ### 里程碑 5（规划中）：美术替换与打磨
 *目标：用正式美术资源替换所有占位几何体和纯色UI。*
 
@@ -264,4 +283,4 @@
 
 *Plan Version: 2.0*
 *Created: 2026-04-25*
-*Updated: 2026-04-26 — 里程碑 1-4 全部完成，新增里程碑 5 规划*
+*Updated: 2026-04-26 — 里程碑 1-4 全部完成，新增里程碑 4 后续重构/修复记录，新增里程碑 4.5 规划*

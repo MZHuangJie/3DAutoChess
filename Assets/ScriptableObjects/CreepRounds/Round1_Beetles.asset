@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c736d37305d710b4f91f5ba7ef28d4c7, type: 3}
   m_Name: Round1_Beetles
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.CreepRoundData
-  roundName: "丧尸"
+  roundName: "\u4E27\u5C38"
   creeps:
-  - creepName: "丧尸"
+  - creepName: "\u4E27\u5C38"
     health: 200
     attackDamage: 20
     armor: 5
     attackSpeed: 0.5
     color: {r: 0.4, g: 0.5, b: 0.3, a: 1}
-  - creepName: "丧尸"
+  - creepName: "\u4E27\u5C38"
     health: 200
     attackDamage: 20
     armor: 5
     attackSpeed: 0.5
     color: {r: 0.4, g: 0.5, b: 0.3, a: 1}
-  - creepName: "丧尸"
+  - creepName: "\u4E27\u5C38"
     health: 200
     attackDamage: 20
     armor: 5

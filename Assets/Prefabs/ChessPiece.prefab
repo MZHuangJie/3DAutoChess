@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e30322b89f5ddb499e8bd23cf66b2a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Core.ChessPiece
+  equipment: []
   heroData: {fileID: 0}
   starLevel: 1
   currentHealth: 0
@@ -61,7 +62,6 @@ MonoBehaviour:
   boardPosition: {x: 0, y: 0}
   isOnBench: 0
   benchIndex: -1
-  equipment: []
 --- !u!1 &7142696813793835933
 GameObject:
   m_ObjectHideFlags: 0

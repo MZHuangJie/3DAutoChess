@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
   m_Name: Hero_Legolas
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
-  heroName: "莱戈拉斯"
+  heroName: "\u83B1\u6208\u62C9\u65AF"
   cost: 2
-  displayColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  displayColor: {r: 0.9, g: 0.8, b: 0.2, a: 1}
   maxHealth: 500
   attackDamage: 75
   attackSpeed: 0.85
@@ -24,10 +24,12 @@ MonoBehaviour:
   maxMana: 90
   startingMana: 0
   attackType: 1
+  modelPrefab: {fileID: 0}
+  modelScale: 1
   factions:
-  - "指环王"
-  - "科技"
-  skillName: "精灵连射"
+  - "\u6307\u73AF\u738B"
+  - "\u79D1\u6280"
+  skillName: "\u7CBE\u7075\u8FDE\u5C04"
   skillType: 2
   skillTargetType: 3
   skillDamage: 80

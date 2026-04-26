@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
   m_Name: Hero_CopyChuXuan
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
-  heroName: "复制体楚轩"
+  heroName: "\u590D\u5236\u4F53\u695A\u8F69"
   cost: 5
   displayColor: {r: 0.3, g: 0, b: 0.4, a: 1}
   maxHealth: 650
@@ -24,11 +24,13 @@ MonoBehaviour:
   maxMana: 120
   startingMana: 40
   attackType: 1
+  modelPrefab: {fileID: 0}
+  modelScale: 1
   factions:
-  - "魔鬼队"
-  - "精神力"
-  - "原暗·因果律武器"
-  skillName: "因果律攻击"
+  - "\u9B54\u9B3C\u961F"
+  - "\u7CBE\u795E\u529B"
+  - "\u539F\u6697\xB7\u56E0\u679C\u5F8B\u6B66\u5668"
+  skillName: "\u56E0\u679C\u5F8B\u653B\u51FB"
   skillType: 1
   skillTargetType: 0
   skillDamage: 400

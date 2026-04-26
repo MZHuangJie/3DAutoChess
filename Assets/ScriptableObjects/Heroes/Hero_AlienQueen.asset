@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d22adb44297f544595b04ff2582bc83, type: 3}
   m_Name: Hero_AlienQueen
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.HeroData
-  heroName: "异形女王"
+  heroName: "\u5F02\u5F62\u5973\u738B"
   cost: 4
-  displayColor: {r: 0.2, g: 0.2, b: 0.3, a: 1}
+  displayColor: {r: 0.3, g: 0.6, b: 0.3, a: 1}
   maxHealth: 900
   attackDamage: 55
   attackSpeed: 0.5
@@ -24,10 +24,12 @@ MonoBehaviour:
   maxMana: 100
   startingMana: 30
   attackType: 0
+  modelPrefab: {fileID: 0}
+  modelScale: 1
   factions:
-  - "异形"
-  - "精神力"
-  skillName: "虫巢召唤"
+  - "\u5F02\u5F62"
+  - "\u7CBE\u795E\u529B"
+  skillName: "\u866B\u5DE2\u53EC\u5524"
   skillType: 2
   skillTargetType: 3
   skillDamage: 150

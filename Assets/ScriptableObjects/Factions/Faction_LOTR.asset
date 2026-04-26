@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0c46330af41cf418dfd7c1dea1111f, type: 3}
   m_Name: Faction_LOTR
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.FactionData
-  factionName: "指环王"
+  factionName: "\u6307\u73AF\u738B"
   factionColor: {r: 0.9, g: 0.8, b: 0.2, a: 1}
   thresholds:
   - count: 2
-    description: "指环王+20攻击/+15护甲"
+    description: "\u6307\u73AF\u738B+20\u653B\u51FB/+15\u62A4\u7532"
     healthBonus: 0
     attackBonus: 20
     attackSpeedBonus: 0
     armorBonus: 15
     magicResistBonus: 0
   - count: 4
-    description: "指环王+50攻击/+35护甲/+150HP"
+    description: "\u6307\u73AF\u738B+50\u653B\u51FB/+35\u62A4\u7532/+150HP"
     healthBonus: 150
     attackBonus: 50
     attackSpeedBonus: 0

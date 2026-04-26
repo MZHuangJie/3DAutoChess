@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c736d37305d710b4f91f5ba7ef28d4c7, type: 3}
   m_Name: Round17_Dragon
   m_EditorClassIdentifier: Assembly-CSharp::AutoChess.Data.CreepRoundData
-  roundName: "异形皇后"
+  roundName: "\u5F02\u5F62\u7687\u540E"
   creeps:
-  - creepName: "异形皇后"
+  - creepName: "\u5F02\u5F62\u7687\u540E"
     health: 2000
     attackDamage: 80
     armor: 40

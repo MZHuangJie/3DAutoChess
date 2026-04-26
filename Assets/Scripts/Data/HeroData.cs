@@ -25,6 +25,11 @@ namespace AutoChess.Data
         public int startingMana = 0;
         public AttackType attackType = AttackType.Melee;
 
+        [Header("Model")]
+        public GameObject modelPrefab;
+        public float modelScale = 1f;
+        public float modelYOffset = 0f;
+
         [Header("Factions")]
         public string[] factions;
 
