@@ -39,7 +39,7 @@ namespace AutoChess.Editor
             AssetDatabase.SaveAssets();
 
             EditorUtility.DisplayDialog("Setup Complete",
-                "AutoChess Milestone 4 scene has been set up!\n\n" +
+                "无限恐怖自走棋 scene has been set up!\n\n" +
                 "Press Play to start the game.", "OK");
         }
 
@@ -94,146 +94,388 @@ namespace AutoChess.Editor
             EnsureDirectory("Assets/ScriptableObjects/Heroes");
             var heroes = new System.Collections.Generic.List<HeroData>();
 
-            // Warrior - Red
-            var h1 = ScriptableObject.CreateInstance<HeroData>();
-            h1.heroName = "狂战士";
-            h1.cost = 1;
-            h1.displayColor = new Color(0.9f, 0.2f, 0.2f);
-            h1.maxHealth = 700;
-            h1.attackDamage = 60;
-            h1.attackSpeed = 0.65f;
-            h1.armor = 35;
-            h1.magicResist = 20;
-            h1.attackRange = 1f;
-            h1.maxMana = 100;
-            h1.startingMana = 0;
-            h1.attackType = AttackType.Melee;
-            h1.factions = new string[] { "战士", "诺克萨斯" };
-            h1.skillName = "狂暴斩击";
-            h1.skillType = SkillType.Damage;
-            h1.skillTargetType = SkillTargetType.NearestEnemy;
-            h1.skillDamage = 150;
-            h1.skillIsMagic = false;
-            AssetDatabase.CreateAsset(h1, "Assets/ScriptableObjects/Heroes/Hero_Berserker.asset");
-            heroes.Add(h1);
+            // === 1费 (7个) ===
+            var h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "萧宏吕"; h.cost = 1;
+            h.displayColor = new Color(0.2f, 0.6f, 0.9f);
+            h.maxHealth = 700; h.attackDamage = 55; h.attackSpeed = 0.65f;
+            h.armor = 35; h.magicResist = 20; h.attackRange = 1f;
+            h.maxMana = 100; h.startingMana = 0;
+            h.attackType = AttackType.Melee;
+            h.factions = new string[] { "中洲队", "武术" };
+            h.skillName = "铁拳"; h.skillType = SkillType.Damage;
+            h.skillTargetType = SkillTargetType.NearestEnemy;
+            h.skillDamage = 140; h.skillRange = 2f; h.skillStunDuration = 0; h.skillIsMagic = false;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_XiaoHongLv.asset");
+            heroes.Add(h);
 
-            // Archer - Green
-            var h2 = ScriptableObject.CreateInstance<HeroData>();
-            h2.heroName = "神射手";
-            h2.cost = 2;
-            h2.displayColor = new Color(0.2f, 0.8f, 0.2f);
-            h2.maxHealth = 450;
-            h2.attackDamage = 70;
-            h2.attackSpeed = 0.85f;
-            h2.armor = 15;
-            h2.magicResist = 15;
-            h2.attackRange = 4f;
-            h2.maxMana = 90;
-            h2.startingMana = 0;
-            h2.attackType = AttackType.Ranged;
-            h2.factions = new string[] { "射手", "艾欧尼亚" };
-            h2.skillName = "箭雨";
-            h2.skillType = SkillType.AreaDamage;
-            h2.skillTargetType = SkillTargetType.AllEnemiesInRange;
-            h2.skillDamage = 80;
-            h2.skillRange = 2f;
-            h2.skillIsMagic = false;
-            AssetDatabase.CreateAsset(h2, "Assets/ScriptableObjects/Heroes/Hero_Archer.asset");
-            heroes.Add(h2);
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "洛丽"; h.cost = 1;
+            h.displayColor = new Color(0.6f, 0.2f, 0.8f);
+            h.maxHealth = 500; h.attackDamage = 35; h.attackSpeed = 0.60f;
+            h.armor = 20; h.magicResist = 30; h.attackRange = 3f;
+            h.maxMana = 100; h.startingMana = 0;
+            h.attackType = AttackType.Ranged;
+            h.factions = new string[] { "中洲队", "精神力" };
+            h.skillName = "精神治愈"; h.skillType = SkillType.Heal;
+            h.skillTargetType = SkillTargetType.LowestHpAlly;
+            h.skillDamage = 150; h.skillRange = 2f; h.skillStunDuration = 0; h.skillIsMagic = true;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_Luoli.asset");
+            heroes.Add(h);
 
-            // Mage - Blue
-            var h3 = ScriptableObject.CreateInstance<HeroData>();
-            h3.heroName = "元素法师";
-            h3.cost = 3;
-            h3.displayColor = new Color(0.2f, 0.4f, 0.9f);
-            h3.maxHealth = 500;
-            h3.attackDamage = 55;
-            h3.attackSpeed = 0.6f;
-            h3.armor = 18;
-            h3.magicResist = 30;
-            h3.attackRange = 4f;
-            h3.maxMana = 120;
-            h3.startingMana = 30;
-            h3.attackType = AttackType.Ranged;
-            h3.factions = new string[] { "法师", "虚空" };
-            h3.skillName = "元素风暴";
-            h3.skillType = SkillType.AreaDamage;
-            h3.skillTargetType = SkillTargetType.AllEnemiesInRange;
-            h3.skillDamage = 120;
-            h3.skillRange = 2.5f;
-            h3.skillIsMagic = true;
-            AssetDatabase.CreateAsset(h3, "Assets/ScriptableObjects/Heroes/Hero_Mage.asset");
-            heroes.Add(h3);
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "丧尸步兵"; h.cost = 1;
+            h.displayColor = new Color(0.7f, 0.3f, 0.2f);
+            h.maxHealth = 750; h.attackDamage = 50; h.attackSpeed = 0.55f;
+            h.armor = 30; h.magicResist = 15; h.attackRange = 1f;
+            h.maxMana = 120; h.startingMana = 0;
+            h.attackType = AttackType.Melee;
+            h.factions = new string[] { "生化危机", "血族" };
+            h.skillName = "撕咬"; h.skillType = SkillType.Damage;
+            h.skillTargetType = SkillTargetType.NearestEnemy;
+            h.skillDamage = 120; h.skillRange = 1.5f; h.skillStunDuration = 0; h.skillIsMagic = false;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_ZombieSoldier.asset");
+            heroes.Add(h);
 
-            // Tank - Yellow
-            var h4 = ScriptableObject.CreateInstance<HeroData>();
-            h4.heroName = "铁壁守卫";
-            h4.cost = 1;
-            h4.displayColor = new Color(0.9f, 0.8f, 0.2f);
-            h4.maxHealth = 900;
-            h4.attackDamage = 40;
-            h4.attackSpeed = 0.55f;
-            h4.armor = 45;
-            h4.magicResist = 35;
-            h4.attackRange = 1f;
-            h4.maxMana = 150;
-            h4.startingMana = 50;
-            h4.attackType = AttackType.Melee;
-            h4.factions = new string[] { "护卫", "德玛西亚" };
-            h4.skillName = "震地猛击";
-            h4.skillType = SkillType.Stun;
-            h4.skillTargetType = SkillTargetType.NearestEnemy;
-            h4.skillDamage = 40;
-            h4.skillStunDuration = 1.5f;
-            h4.skillIsMagic = true;
-            AssetDatabase.CreateAsset(h4, "Assets/ScriptableObjects/Heroes/Hero_Tank.asset");
-            heroes.Add(h4);
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "半兽人"; h.cost = 1;
+            h.displayColor = new Color(0.9f, 0.8f, 0.2f);
+            h.maxHealth = 800; h.attackDamage = 45; h.attackSpeed = 0.55f;
+            h.armor = 40; h.magicResist = 20; h.attackRange = 1f;
+            h.maxMana = 150; h.startingMana = 50;
+            h.attackType = AttackType.Melee;
+            h.factions = new string[] { "指环王", "血族" };
+            h.skillName = "战吼"; h.skillType = SkillType.Stun;
+            h.skillTargetType = SkillTargetType.NearestEnemy;
+            h.skillDamage = 40; h.skillRange = 2f; h.skillStunDuration = 1.5f; h.skillIsMagic = true;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_Orc.asset");
+            heroes.Add(h);
 
-            // Assassin - Purple
-            var h5 = ScriptableObject.CreateInstance<HeroData>();
-            h5.heroName = "暗影刺客";
-            h5.cost = 2;
-            h5.displayColor = new Color(0.7f, 0.2f, 0.8f);
-            h5.maxHealth = 550;
-            h5.attackDamage = 75;
-            h5.attackSpeed = 0.9f;
-            h5.armor = 20;
-            h5.magicResist = 20;
-            h5.attackRange = 1f;
-            h5.maxMana = 80;
-            h5.startingMana = 0;
-            h5.attackType = AttackType.Melee;
-            h5.factions = new string[] { "刺客", "诺克萨斯" };
-            h5.skillName = "暗影突袭";
-            h5.skillType = SkillType.Damage;
-            h5.skillTargetType = SkillTargetType.NearestEnemy;
-            h5.skillDamage = 200;
-            h5.skillIsMagic = false;
-            AssetDatabase.CreateAsset(h5, "Assets/ScriptableObjects/Heroes/Hero_Assassin.asset");
-            heroes.Add(h5);
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "抱脸虫"; h.cost = 1;
+            h.displayColor = new Color(0.3f, 0.6f, 0.3f);
+            h.maxHealth = 550; h.attackDamage = 65; h.attackSpeed = 0.85f;
+            h.armor = 15; h.magicResist = 15; h.attackRange = 1f;
+            h.maxMana = 80; h.startingMana = 0;
+            h.attackType = AttackType.Melee;
+            h.factions = new string[] { "异形", "武术" };
+            h.skillName = "寄生突袭"; h.skillType = SkillType.Damage;
+            h.skillTargetType = SkillTargetType.NearestEnemy;
+            h.skillDamage = 160; h.skillRange = 2f; h.skillStunDuration = 0; h.skillIsMagic = false;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_Facehugger.asset");
+            heroes.Add(h);
 
-            // Support - Cyan
-            var h6 = ScriptableObject.CreateInstance<HeroData>();
-            h6.heroName = "圣光祭司";
-            h6.cost = 2;
-            h6.displayColor = new Color(0.2f, 0.9f, 0.9f);
-            h6.maxHealth = 500;
-            h6.attackDamage = 35;
-            h6.attackSpeed = 0.6f;
-            h6.armor = 20;
-            h6.magicResist = 25;
-            h6.attackRange = 3f;
-            h6.maxMana = 100;
-            h6.startingMana = 0;
-            h6.attackType = AttackType.Ranged;
-            h6.factions = new string[] { "神谕", "德玛西亚" };
-            h6.skillName = "圣光治愈";
-            h6.skillType = SkillType.Heal;
-            h6.skillTargetType = SkillTargetType.LowestHpAlly;
-            h6.skillDamage = 150;
-            h6.skillIsMagic = true;
-            AssetDatabase.CreateAsset(h6, "Assets/ScriptableObjects/Heroes/Hero_Support.asset");
-            heroes.Add(h6);
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "安布雷拉士兵"; h.cost = 1;
+            h.displayColor = new Color(0.7f, 0.3f, 0.2f);
+            h.maxHealth = 450; h.attackDamage = 60; h.attackSpeed = 0.75f;
+            h.armor = 20; h.magicResist = 15; h.attackRange = 3f;
+            h.maxMana = 90; h.startingMana = 0;
+            h.attackType = AttackType.Ranged;
+            h.factions = new string[] { "生化危机", "科技" };
+            h.skillName = "扫射"; h.skillType = SkillType.AreaDamage;
+            h.skillTargetType = SkillTargetType.AllEnemiesInRange;
+            h.skillDamage = 70; h.skillRange = 2f; h.skillStunDuration = 0; h.skillIsMagic = false;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_UmbrellaSoldier.asset");
+            heroes.Add(h);
+
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "哈比人"; h.cost = 1;
+            h.displayColor = new Color(0.9f, 0.8f, 0.2f);
+            h.maxHealth = 500; h.attackDamage = 40; h.attackSpeed = 0.60f;
+            h.armor = 15; h.magicResist = 25; h.attackRange = 3f;
+            h.maxMana = 100; h.startingMana = 0;
+            h.attackType = AttackType.Ranged;
+            h.factions = new string[] { "指环王", "修真" };
+            h.skillName = "星光瓶"; h.skillType = SkillType.Heal;
+            h.skillTargetType = SkillTargetType.LowestHpAlly;
+            h.skillDamage = 120; h.skillRange = 2f; h.skillStunDuration = 0; h.skillIsMagic = true;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_Hobbit.asset");
+            heroes.Add(h);
+
+            // === 2费 (6) ===
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "张恒"; h.cost = 2;
+            h.displayColor = new Color(0.3f, 0.8f, 0.9f);
+            h.maxHealth = 600; h.attackDamage = 80; h.attackSpeed = 0.70f;
+            h.armor = 20; h.magicResist = 20; h.attackRange = 4f;
+            h.maxMana = 80; h.startingMana = 0;
+            h.attackType = AttackType.Ranged;
+            h.factions = new string[] { "中洲队", "科技" };
+            h.skillName = "精准狙击"; h.skillType = SkillType.Damage;
+            h.skillTargetType = SkillTargetType.NearestEnemy;
+            h.skillDamage = 200; h.skillRange = 2f; h.skillStunDuration = 0; h.skillIsMagic = false;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_ZhangHeng.asset");
+            heroes.Add(h);
+
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "刘宇"; h.cost = 2;
+            h.displayColor = new Color(0.4f, 0.3f, 0.9f);
+            h.maxHealth = 550; h.attackDamage = 60; h.attackSpeed = 0.65f;
+            h.armor = 20; h.magicResist = 30; h.attackRange = 3f;
+            h.maxMana = 70; h.startingMana = 0;
+            h.attackType = AttackType.Ranged;
+            h.factions = new string[] { "中洲队", "修真" };
+            h.skillName = "御剑术"; h.skillType = SkillType.AreaDamage;
+            h.skillTargetType = SkillTargetType.AllEnemiesInRange;
+            h.skillDamage = 90; h.skillRange = 2.5f; h.skillStunDuration = 0; h.skillIsMagic = true;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_LiuYu.asset");
+            heroes.Add(h);
+
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "王侠"; h.cost = 2;
+            h.displayColor = new Color(0.3f, 0.8f, 0.9f);
+            h.maxHealth = 650; h.attackDamage = 65; h.attackSpeed = 0.60f;
+            h.armor = 25; h.magicResist = 20; h.attackRange = 2f;
+            h.maxMana = 90; h.startingMana = 0;
+            h.attackType = AttackType.Ranged;
+            h.factions = new string[] { "中洲队", "科技" };
+            h.skillName = "C4炸弹"; h.skillType = SkillType.AreaDamage;
+            h.skillTargetType = SkillTargetType.AllEnemiesInRange;
+            h.skillDamage = 130; h.skillRange = 2f; h.skillStunDuration = 0; h.skillIsMagic = false;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_WangXia.asset");
+            heroes.Add(h);
+
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "莱戈拉斯"; h.cost = 2;
+            h.displayColor = new Color(0.9f, 0.8f, 0.2f);
+            h.maxHealth = 500; h.attackDamage = 75; h.attackSpeed = 0.85f;
+            h.armor = 15; h.magicResist = 15; h.attackRange = 4f;
+            h.maxMana = 90; h.startingMana = 0;
+            h.attackType = AttackType.Ranged;
+            h.factions = new string[] { "指环王", "科技" };
+            h.skillName = "精灵连射"; h.skillType = SkillType.AreaDamage;
+            h.skillTargetType = SkillTargetType.AllEnemiesInRange;
+            h.skillDamage = 80; h.skillRange = 2f; h.skillStunDuration = 0; h.skillIsMagic = false;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_Legolas.asset");
+            heroes.Add(h);
+
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "暴君T-002"; h.cost = 2;
+            h.displayColor = new Color(0.7f, 0.3f, 0.2f);
+            h.maxHealth = 850; h.attackDamage = 55; h.attackSpeed = 0.50f;
+            h.armor = 40; h.magicResist = 25; h.attackRange = 1f;
+            h.maxMana = 120; h.startingMana = 30;
+            h.attackType = AttackType.Melee;
+            h.factions = new string[] { "生化危机", "血族" };
+            h.skillName = "暴怒冲锋"; h.skillType = SkillType.Stun;
+            h.skillTargetType = SkillTargetType.NearestEnemy;
+            h.skillDamage = 60; h.skillRange = 2f; h.skillStunDuration = 1.2f; h.skillIsMagic = false;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_TyrantT002.asset");
+            heroes.Add(h);
+
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "异形潜伏者"; h.cost = 2;
+            h.displayColor = new Color(0.3f, 0.6f, 0.3f);
+            h.maxHealth = 600; h.attackDamage = 80; h.attackSpeed = 0.90f;
+            h.armor = 20; h.magicResist = 20; h.attackRange = 1f;
+            h.maxMana = 80; h.startingMana = 0;
+            h.attackType = AttackType.Melee;
+            h.factions = new string[] { "异形", "武术" };
+            h.skillName = "尾刺穿刺"; h.skillType = SkillType.Damage;
+            h.skillTargetType = SkillTargetType.NearestEnemy;
+            h.skillDamage = 200; h.skillRange = 2f; h.skillStunDuration = 0; h.skillIsMagic = false;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_AlienLurker.asset");
+            heroes.Add(h);
+
+            // === 3费 (5) ===
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "赵樱空"; h.cost = 3;
+            h.displayColor = new Color(0.9f, 0.5f, 0.1f);
+            h.maxHealth = 700; h.attackDamage = 90; h.attackSpeed = 0.85f;
+            h.armor = 25; h.magicResist = 25; h.attackRange = 1f;
+            h.maxMana = 60; h.startingMana = 0;
+            h.attackType = AttackType.Melee;
+            h.factions = new string[] { "中洲队", "武术" };
+            h.skillName = "暗影突袭"; h.skillType = SkillType.Damage;
+            h.skillTargetType = SkillTargetType.NearestEnemy;
+            h.skillDamage = 280; h.skillRange = 2f; h.skillStunDuration = 0; h.skillIsMagic = false;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_ZhaoYingkong.asset");
+            heroes.Add(h);
+
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "阿拉贡"; h.cost = 3;
+            h.displayColor = new Color(0.9f, 0.8f, 0.2f);
+            h.maxHealth = 750; h.attackDamage = 75; h.attackSpeed = 0.70f;
+            h.armor = 35; h.magicResist = 25; h.attackRange = 1f;
+            h.maxMana = 80; h.startingMana = 0;
+            h.attackType = AttackType.Melee;
+            h.factions = new string[] { "指环王", "武术" };
+            h.skillName = "安都瑞尔"; h.skillType = SkillType.AreaDamage;
+            h.skillTargetType = SkillTargetType.AllEnemiesInRange;
+            h.skillDamage = 150; h.skillRange = 2.5f; h.skillStunDuration = 0; h.skillIsMagic = false;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_Aragorn.asset");
+            heroes.Add(h);
+
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "艾丽丝"; h.cost = 3;
+            h.displayColor = new Color(0.7f, 0.3f, 0.2f);
+            h.maxHealth = 700; h.attackDamage = 70; h.attackSpeed = 0.75f;
+            h.armor = 25; h.magicResist = 20; h.attackRange = 1f;
+            h.maxMana = 60; h.startingMana = 0;
+            h.attackType = AttackType.Melee;
+            h.factions = new string[] { "生化危机", "血族" };
+            h.skillName = "T病毒强化"; h.skillType = SkillType.Damage;
+            h.skillTargetType = SkillTargetType.NearestEnemy;
+            h.skillDamage = 180; h.skillRange = 2f; h.skillStunDuration = 0; h.skillIsMagic = false;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_Alice.asset");
+            heroes.Add(h);
+
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "异形战士"; h.cost = 3;
+            h.displayColor = new Color(0.3f, 0.6f, 0.3f);
+            h.maxHealth = 800; h.attackDamage = 65; h.attackSpeed = 0.65f;
+            h.armor = 30; h.magicResist = 15; h.attackRange = 1f;
+            h.maxMana = 100; h.startingMana = 50;
+            h.attackType = AttackType.Melee;
+            h.factions = new string[] { "异形", "血族" };
+            h.skillName = "酸血喷射"; h.skillType = SkillType.AreaDamage;
+            h.skillTargetType = SkillTargetType.AllEnemiesInRange;
+            h.skillDamage = 120; h.skillRange = 2f; h.skillStunDuration = 0; h.skillIsMagic = true;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_AlienWarrior.asset");
+            heroes.Add(h);
+
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "复制体樱空"; h.cost = 3;
+            h.displayColor = new Color(0.6f, 0.1f, 0.1f);
+            h.maxHealth = 650; h.attackDamage = 95; h.attackSpeed = 0.90f;
+            h.armor = 20; h.magicResist = 20; h.attackRange = 1f;
+            h.maxMana = 50; h.startingMana = 0;
+            h.attackType = AttackType.Melee;
+            h.factions = new string[] { "魔鬼队", "武术" };
+            h.skillName = "嗜血之舞"; h.skillType = SkillType.Damage;
+            h.skillTargetType = SkillTargetType.NearestEnemy;
+            h.skillDamage = 250; h.skillRange = 2f; h.skillStunDuration = 0; h.skillIsMagic = false;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_CopyYingkong.asset");
+            heroes.Add(h);
+
+            // === 4费 (5) ===
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "零"; h.cost = 4;
+            h.displayColor = new Color(0.6f, 0.2f, 0.8f);
+            h.maxHealth = 600; h.attackDamage = 50; h.attackSpeed = 0.60f;
+            h.armor = 20; h.magicResist = 35; h.attackRange = 3f;
+            h.maxMana = 80; h.startingMana = 0;
+            h.attackType = AttackType.Ranged;
+            h.factions = new string[] { "中洲队", "精神力" };
+            h.skillName = "精神风暴"; h.skillType = SkillType.Stun;
+            h.skillTargetType = SkillTargetType.AllEnemiesInRange;
+            h.skillDamage = 100; h.skillRange = 2.5f; h.skillStunDuration = 1.5f; h.skillIsMagic = true;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_Ling.asset");
+            heroes.Add(h);
+
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "甘道夫"; h.cost = 4;
+            h.displayColor = new Color(0.9f, 0.8f, 0.2f);
+            h.maxHealth = 700; h.attackDamage = 60; h.attackSpeed = 0.55f;
+            h.armor = 30; h.magicResist = 40; h.attackRange = 3f;
+            h.maxMana = 90; h.startingMana = 20;
+            h.attackType = AttackType.Ranged;
+            h.factions = new string[] { "指环王", "修真" };
+            h.skillName = "你不可通过"; h.skillType = SkillType.AreaDamage;
+            h.skillTargetType = SkillTargetType.AllEnemiesInRange;
+            h.skillDamage = 200; h.skillRange = 3f; h.skillStunDuration = 0; h.skillIsMagic = true;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_Gandalf.asset");
+            heroes.Add(h);
+
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "异形女王"; h.cost = 4;
+            h.displayColor = new Color(0.3f, 0.6f, 0.3f);
+            h.maxHealth = 900; h.attackDamage = 55; h.attackSpeed = 0.50f;
+            h.armor = 35; h.magicResist = 30; h.attackRange = 1f;
+            h.maxMana = 100; h.startingMana = 30;
+            h.attackType = AttackType.Melee;
+            h.factions = new string[] { "异形", "精神力" };
+            h.skillName = "虫巢召唤"; h.skillType = SkillType.AreaDamage;
+            h.skillTargetType = SkillTargetType.AllEnemiesInRange;
+            h.skillDamage = 150; h.skillRange = 2.5f; h.skillStunDuration = 0; h.skillIsMagic = true;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_AlienQueen.asset");
+            heroes.Add(h);
+
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "威斯克"; h.cost = 4;
+            h.displayColor = new Color(0.7f, 0.3f, 0.2f);
+            h.maxHealth = 750; h.attackDamage = 85; h.attackSpeed = 0.80f;
+            h.armor = 30; h.magicResist = 25; h.attackRange = 1f;
+            h.maxMana = 70; h.startingMana = 0;
+            h.attackType = AttackType.Melee;
+            h.factions = new string[] { "生化危机", "科技" };
+            h.skillName = "闪现突击"; h.skillType = SkillType.Damage;
+            h.skillTargetType = SkillTargetType.NearestEnemy;
+            h.skillDamage = 300; h.skillRange = 2f; h.skillStunDuration = 0; h.skillIsMagic = false;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_Wesker.asset");
+            heroes.Add(h);
+
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "复制体张恒"; h.cost = 4;
+            h.displayColor = new Color(0.6f, 0.1f, 0.1f);
+            h.maxHealth = 550; h.attackDamage = 90; h.attackSpeed = 0.75f;
+            h.armor = 20; h.magicResist = 20; h.attackRange = 4f;
+            h.maxMana = 80; h.startingMana = 0;
+            h.attackType = AttackType.Ranged;
+            h.factions = new string[] { "魔鬼队", "科技" };
+            h.skillName = "暗能狙击"; h.skillType = SkillType.Damage;
+            h.skillTargetType = SkillTargetType.NearestEnemy;
+            h.skillDamage = 350; h.skillRange = 2f; h.skillStunDuration = 0; h.skillIsMagic = false;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_CopyZhangHeng.asset");
+            heroes.Add(h);
+
+            // === 5费 (4) ===
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "郑吒"; h.cost = 5;
+            h.displayColor = new Color(1f, 0.4f, 0.1f);
+            h.maxHealth = 1000; h.attackDamage = 100; h.attackSpeed = 0.75f;
+            h.armor = 35; h.magicResist = 30; h.attackRange = 1f;
+            h.maxMana = 80; h.startingMana = 0;
+            h.attackType = AttackType.Melee;
+            h.factions = new string[] { "中洲队", "血族", "洪荒·开天辟地" };
+            h.skillName = "暗焰斩"; h.skillType = SkillType.AreaDamage;
+            h.skillTargetType = SkillTargetType.AllEnemiesInRange;
+            h.skillDamage = 300; h.skillRange = 2.5f; h.skillStunDuration = 0; h.skillIsMagic = false;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_ZhengZha.asset");
+            heroes.Add(h);
+
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "复制体郑吒"; h.cost = 5;
+            h.displayColor = new Color(0.2f, 0f, 0.3f);
+            h.maxHealth = 1100; h.attackDamage = 95; h.attackSpeed = 0.70f;
+            h.armor = 40; h.magicResist = 35; h.attackRange = 1f;
+            h.maxMana = 100; h.startingMana = 0;
+            h.attackType = AttackType.Melee;
+            h.factions = new string[] { "魔鬼队", "血族", "原暗·宇宙终结" };
+            h.skillName = "黑洞吞噬"; h.skillType = SkillType.AreaDamage;
+            h.skillTargetType = SkillTargetType.AllEnemiesInRange;
+            h.skillDamage = 250; h.skillRange = 3f; h.skillStunDuration = 0; h.skillIsMagic = true;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_CopyZhengZha.asset");
+            heroes.Add(h);
+
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "楚轩"; h.cost = 5;
+            h.displayColor = new Color(0.9f, 0.9f, 0.5f);
+            h.maxHealth = 700; h.attackDamage = 60; h.attackSpeed = 0.60f;
+            h.armor = 25; h.magicResist = 35; h.attackRange = 4f;
+            h.maxMana = 100; h.startingMana = 30;
+            h.attackType = AttackType.Ranged;
+            h.factions = new string[] { "中洲队", "科技", "天机·万象推演" };
+            h.skillName = "万象推演"; h.skillType = SkillType.Stun;
+            h.skillTargetType = SkillTargetType.AllEnemiesInRange;
+            h.skillDamage = 80; h.skillRange = 3f; h.skillStunDuration = 2.0f; h.skillIsMagic = true;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_ChuXuan.asset");
+            heroes.Add(h);
+
+            h = ScriptableObject.CreateInstance<HeroData>();
+            h.heroName = "复制体楚轩"; h.cost = 5;
+            h.displayColor = new Color(0.3f, 0f, 0.4f);
+            h.maxHealth = 650; h.attackDamage = 40; h.attackSpeed = 0.50f;
+            h.armor = 20; h.magicResist = 40; h.attackRange = 5f;
+            h.maxMana = 120; h.startingMana = 40;
+            h.attackType = AttackType.Ranged;
+            h.factions = new string[] { "魔鬼队", "精神力", "原暗·因果律武器" };
+            h.skillName = "因果律攻击"; h.skillType = SkillType.Damage;
+            h.skillTargetType = SkillTargetType.NearestEnemy;
+            h.skillDamage = 400; h.skillRange = 2f; h.skillStunDuration = 0; h.skillIsMagic = true;
+            AssetDatabase.CreateAsset(h, "Assets/ScriptableObjects/Heroes/Hero_CopyChuXuan.asset");
+            heroes.Add(h);
 
             return heroes;
         }
@@ -242,31 +484,42 @@ namespace AutoChess.Editor
         {
             EnsureDirectory("Assets/ScriptableObjects/Factions");
             var factions = new System.Collections.Generic.List<FactionData>();
-            factions.Add(CreateFactionAsset("Faction_Warrior", "战士", new Color(0.8f, 0.2f, 0.2f),
-                new (int, string, int, int, float)[] { (2, "战士+150HP", 150, 0, 0), (4, "战士+350HP/+25攻击", 350, 25, 0) }));
-            factions.Add(CreateFactionAsset("Faction_Ranger", "射手", new Color(0.2f, 0.8f, 0.2f),
-                new (int, string, int, int, float)[] { (2, "射手+20%攻速", 0, 0, 0.2f), (4, "射手+40%攻速/+20攻击", 0, 20, 0.4f) }));
-            factions.Add(CreateFactionAsset("Faction_Mage", "法师", new Color(0.2f, 0.4f, 0.9f),
-                new (int, string, int, int, float)[] { (2, "法师+30魔抗/+20%技能", 0, 30, 0), (4, "法师+60魔抗/+50%技能", 0, 60, 0) }));
-            factions.Add(CreateFactionAsset("Faction_Guardian", "护卫", new Color(0.9f, 0.8f, 0.2f),
-                new (int, string, int, int, float)[] { (2, "护卫+25护甲", 0, 25, 0), (4, "护卫+60护甲/+200HP", 200, 60, 0) }));
-            factions.Add(CreateFactionAsset("Faction_Assassin", "刺客", new Color(0.7f, 0.2f, 0.8f),
-                new (int, string, int, int, float)[] { (2, "刺客+15%攻击", 0, 15, 0), (4, "刺客+40%攻击/+15%攻速", 0, 40, 0.15f) }));
-            factions.Add(CreateFactionAsset("Faction_Oracle", "神谕", new Color(0.2f, 0.9f, 0.9f),
-                new (int, string, int, int, float)[] { (2, "神谕+15%HP/+10魔抗", 15, 10, 0), (4, "神谕+30%HP/+25魔抗", 30, 25, 0) }));
-            factions.Add(CreateFactionAsset("Faction_Noxus", "诺克萨斯", new Color(0.6f, 0.1f, 0.1f),
-                new (int, string, int, int, float)[] { (2, "诺克萨斯+20攻击", 0, 20, 0), (4, "诺克萨斯+50攻击/+150HP", 150, 50, 0) }));
-            factions.Add(CreateFactionAsset("Faction_Demacia", "德玛西亚", new Color(0.9f, 0.8f, 0.3f),
-                new (int, string, int, int, float)[] { (2, "德玛西亚+25护甲/+15魔抗", 0, 25, 0), (4, "德玛西亚+50护甲/+35魔抗/+100HP", 100, 50, 0) }));
-            factions.Add(CreateFactionAsset("Faction_Ionia", "艾欧尼亚", new Color(0.2f, 0.7f, 0.3f),
-                new (int, string, int, int, float)[] { (2, "艾欧尼亚+10%攻速", 0, 0, 0.1f), (4, "艾欧尼亚+25%攻速/+15%HP", 15, 0, 0.25f) }));
-            factions.Add(CreateFactionAsset("Faction_Void", "虚空", new Color(0.4f, 0.1f, 0.6f),
-                new (int, string, int, int, float)[] { (2, "虚空+20攻击/+10魔抗", 0, 20, 0), (4, "虚空+50攻击/+30魔抗/+10%HP", 10, 50, 0) }));
+            // Origin 阵营
+            factions.Add(CreateFactionAsset("Faction_Zhongzhou", "中洲队", new Color(0.2f, 0.6f, 0.9f),
+                new (int, string, int, int, float, int, int)[] { (2, "中洲队+150HP/+10护甲", 150, 0, 0, 10, 0), (4, "中洲队+350HP/+25护甲/+15魔抗", 350, 0, 0, 25, 15) }));
+            factions.Add(CreateFactionAsset("Faction_Devil", "魔鬼队", new Color(0.6f, 0.1f, 0.1f),
+                new (int, string, int, int, float, int, int)[] { (2, "魔鬼队+25攻击/+10%攻速", 0, 25, 0.1f, 0, 0), (4, "魔鬼队+60攻击/+25%攻速", 0, 60, 0.25f, 0, 0) }));
+            factions.Add(CreateFactionAsset("Faction_LOTR", "指环王", new Color(0.9f, 0.8f, 0.2f),
+                new (int, string, int, int, float, int, int)[] { (2, "指环王+20攻击/+15护甲", 0, 20, 0, 15, 0), (4, "指环王+50攻击/+35护甲/+150HP", 150, 50, 0, 35, 0) }));
+            factions.Add(CreateFactionAsset("Faction_Alien", "异形", new Color(0.3f, 0.6f, 0.3f),
+                new (int, string, int, int, float, int, int)[] { (2, "异形+200HP/+10%攻速", 200, 0, 0.1f, 0, 0), (4, "异形+400HP/+20%攻速/+15护甲", 400, 0, 0.2f, 15, 0) }));
+            factions.Add(CreateFactionAsset("Faction_RE", "生化危机", new Color(0.7f, 0.3f, 0.2f),
+                new (int, string, int, int, float, int, int)[] { (2, "生化危机+15攻击/+200HP", 200, 15, 0, 0, 0), (4, "生化危机+35攻击/+400HP", 400, 35, 0, 0, 0) }));
+            // Class 职业
+            factions.Add(CreateFactionAsset("Faction_Blood", "血族", new Color(0.8f, 0.1f, 0.15f),
+                new (int, string, int, int, float, int, int)[] { (2, "血族+20攻击/+150HP", 150, 20, 0, 0, 0), (4, "血族+50攻击/+350HP", 350, 50, 0, 0, 0) }));
+            factions.Add(CreateFactionAsset("Faction_Xiuzhen", "修真", new Color(0.4f, 0.3f, 0.9f),
+                new (int, string, int, int, float, int, int)[] { (2, "修真+30魔抗/+15攻击", 0, 15, 0, 0, 30), (4, "修真+60魔抗/+40攻击", 0, 40, 0, 0, 60) }));
+            factions.Add(CreateFactionAsset("Faction_Tech", "科技", new Color(0.3f, 0.8f, 0.9f),
+                new (int, string, int, int, float, int, int)[] { (2, "科技+20%攻速", 0, 0, 0.2f, 0, 0), (4, "科技+40%攻速/+20攻击", 0, 20, 0.4f, 0, 0) }));
+            factions.Add(CreateFactionAsset("Faction_Psychic", "精神力", new Color(0.6f, 0.2f, 0.8f),
+                new (int, string, int, int, float, int, int)[] { (2, "精神力+25魔抗/+100HP", 100, 0, 0, 0, 25), (4, "精神力+50魔抗/+250HP", 250, 0, 0, 0, 50) }));
+            factions.Add(CreateFactionAsset("Faction_Martial", "武术", new Color(0.9f, 0.5f, 0.1f),
+                new (int, string, int, int, float, int, int)[] { (2, "武术+15攻击/+10护甲", 0, 15, 0, 10, 0), (4, "武术+40攻击/+25护甲/+10%攻速", 0, 40, 0.1f, 25, 0) }));
+            // 5费独特羁绊（1人激活）
+            factions.Add(CreateFactionAsset("Faction_Honghuang", "洪荒·开天辟地", new Color(1f, 0.4f, 0.1f),
+                new (int, string, int, int, float, int, int)[] { (1, "洪荒·开天辟地: +50攻击/+300HP/+20护甲", 300, 50, 0, 20, 0) }));
+            factions.Add(CreateFactionAsset("Faction_DarkEnd", "原暗·宇宙终结", new Color(0.2f, 0f, 0.3f),
+                new (int, string, int, int, float, int, int)[] { (1, "原暗·宇宙终结: +40攻击/+400HP/+25魔抗", 400, 40, 0, 0, 25) }));
+            factions.Add(CreateFactionAsset("Faction_Tianji", "天机·万象推演", new Color(0.9f, 0.9f, 0.5f),
+                new (int, string, int, int, float, int, int)[] { (1, "天机·万象推演: +30攻击/+20%攻速/+200HP", 200, 30, 0.2f, 0, 0) }));
+            factions.Add(CreateFactionAsset("Faction_Causal", "原暗·因果律武器", new Color(0.3f, 0f, 0.4f),
+                new (int, string, int, int, float, int, int)[] { (1, "原暗·因果律武器: +20攻击/+300HP/+30魔抗", 300, 20, 0, 0, 30) }));
             return factions;
         }
 
         static FactionData CreateFactionAsset(string fileName, string name, Color color,
-            (int count, string desc, int hp, int atk, float spd)[] thresholds)
+            (int count, string desc, int hp, int atk, float spd, int armor, int mr)[] thresholds)
         {
             var f = ScriptableObject.CreateInstance<FactionData>();
             f.factionName = name;
@@ -280,7 +533,9 @@ namespace AutoChess.Editor
                     description = thresholds[i].desc,
                     healthBonus = thresholds[i].hp,
                     attackBonus = thresholds[i].atk,
-                    attackSpeedBonus = thresholds[i].spd
+                    attackSpeedBonus = thresholds[i].spd,
+                    armorBonus = thresholds[i].armor,
+                    magicResistBonus = thresholds[i].mr
                 };
             }
             AssetDatabase.CreateAsset(f, $"Assets/ScriptableObjects/Factions/{fileName}.asset");
@@ -470,41 +725,41 @@ namespace AutoChess.Editor
             EnsureDirectory("Assets/ScriptableObjects/CreepRounds");
             var rounds = new System.Collections.Generic.List<CreepRoundData>();
 
-            rounds.Add(CreateCreepRoundAsset("Round1_Beetles", "石甲虫", 1, 1, false,
+            rounds.Add(CreateCreepRoundAsset("Round1_Beetles", "丧尸", 1, 1, false,
                 new CreepInfo[] {
-                    new CreepInfo { creepName = "石甲虫", health = 200, attackDamage = 20, armor = 5, attackSpeed = 0.5f, color = new Color(0.5f, 0.4f, 0.3f) },
-                    new CreepInfo { creepName = "石甲虫", health = 200, attackDamage = 20, armor = 5, attackSpeed = 0.5f, color = new Color(0.5f, 0.4f, 0.3f) },
-                    new CreepInfo { creepName = "石甲虫", health = 200, attackDamage = 20, armor = 5, attackSpeed = 0.5f, color = new Color(0.5f, 0.4f, 0.3f) }
+                    new CreepInfo { creepName = "丧尸", health = 200, attackDamage = 20, armor = 5, attackSpeed = 0.5f, color = new Color(0.4f, 0.5f, 0.3f) },
+                    new CreepInfo { creepName = "丧尸", health = 200, attackDamage = 20, armor = 5, attackSpeed = 0.5f, color = new Color(0.4f, 0.5f, 0.3f) },
+                    new CreepInfo { creepName = "丧尸", health = 200, attackDamage = 20, armor = 5, attackSpeed = 0.5f, color = new Color(0.4f, 0.5f, 0.3f) }
                 }));
 
-            rounds.Add(CreateCreepRoundAsset("Round2_Wolves", "灰狼", 1, 1, false,
+            rounds.Add(CreateCreepRoundAsset("Round2_Wolves", "舔食者", 1, 1, false,
                 new CreepInfo[] {
-                    new CreepInfo { creepName = "灰狼", health = 350, attackDamage = 35, armor = 10, attackSpeed = 0.7f, color = new Color(0.4f, 0.4f, 0.45f) },
-                    new CreepInfo { creepName = "灰狼", health = 350, attackDamage = 35, armor = 10, attackSpeed = 0.7f, color = new Color(0.4f, 0.4f, 0.45f) },
-                    new CreepInfo { creepName = "灰狼", health = 350, attackDamage = 35, armor = 10, attackSpeed = 0.7f, color = new Color(0.4f, 0.4f, 0.45f) }
+                    new CreepInfo { creepName = "舔食者", health = 350, attackDamage = 35, armor = 10, attackSpeed = 0.7f, color = new Color(0.6f, 0.2f, 0.2f) },
+                    new CreepInfo { creepName = "舔食者", health = 350, attackDamage = 35, armor = 10, attackSpeed = 0.7f, color = new Color(0.6f, 0.2f, 0.2f) },
+                    new CreepInfo { creepName = "舔食者", health = 350, attackDamage = 35, armor = 10, attackSpeed = 0.7f, color = new Color(0.6f, 0.2f, 0.2f) }
                 }));
 
-            rounds.Add(CreateCreepRoundAsset("Round3_Gargoyle", "石像鬼", 2, 1, false,
+            rounds.Add(CreateCreepRoundAsset("Round3_Gargoyle", "猎犬", 2, 1, false,
                 new CreepInfo[] {
-                    new CreepInfo { creepName = "石像鬼", health = 800, attackDamage = 50, armor = 25, attackSpeed = 0.6f, color = new Color(0.35f, 0.35f, 0.4f) }
+                    new CreepInfo { creepName = "猎犬", health = 800, attackDamage = 50, armor = 25, attackSpeed = 0.6f, color = new Color(0.3f, 0.3f, 0.35f) }
                 }));
 
-            rounds.Add(CreateCreepRoundAsset("Round10_Ghosts", "幽灵", 2, 2, false,
+            rounds.Add(CreateCreepRoundAsset("Round10_Ghosts", "抱脸体", 2, 2, false,
                 new CreepInfo[] {
-                    new CreepInfo { creepName = "幽灵", health = 500, attackDamage = 45, armor = 10, attackSpeed = 0.65f, color = new Color(0.6f, 0.7f, 0.9f) },
-                    new CreepInfo { creepName = "幽灵", health = 500, attackDamage = 45, armor = 10, attackSpeed = 0.65f, color = new Color(0.6f, 0.7f, 0.9f) },
-                    new CreepInfo { creepName = "幽灵", health = 500, attackDamage = 45, armor = 10, attackSpeed = 0.65f, color = new Color(0.6f, 0.7f, 0.9f) },
-                    new CreepInfo { creepName = "幽灵", health = 500, attackDamage = 45, armor = 10, attackSpeed = 0.65f, color = new Color(0.6f, 0.7f, 0.9f) }
+                    new CreepInfo { creepName = "抱脸体", health = 500, attackDamage = 45, armor = 10, attackSpeed = 0.65f, color = new Color(0.3f, 0.4f, 0.3f) },
+                    new CreepInfo { creepName = "抱脸体", health = 500, attackDamage = 45, armor = 10, attackSpeed = 0.65f, color = new Color(0.3f, 0.4f, 0.3f) },
+                    new CreepInfo { creepName = "抱脸体", health = 500, attackDamage = 45, armor = 10, attackSpeed = 0.65f, color = new Color(0.3f, 0.4f, 0.3f) },
+                    new CreepInfo { creepName = "抱脸体", health = 500, attackDamage = 45, armor = 10, attackSpeed = 0.65f, color = new Color(0.3f, 0.4f, 0.3f) }
                 }));
 
-            rounds.Add(CreateCreepRoundAsset("Round17_Dragon", "巨龙", 3, 1, true,
+            rounds.Add(CreateCreepRoundAsset("Round17_Dragon", "异形皇后", 3, 1, true,
                 new CreepInfo[] {
-                    new CreepInfo { creepName = "巨龙", health = 2000, attackDamage = 80, armor = 40, attackSpeed = 0.5f, color = new Color(0.8f, 0.2f, 0.1f) }
+                    new CreepInfo { creepName = "异形皇后", health = 2000, attackDamage = 80, armor = 40, attackSpeed = 0.5f, color = new Color(0.2f, 0.2f, 0.3f) }
                 }));
 
-            rounds.Add(CreateCreepRoundAsset("Round24_AncientDragon", "远古龙", 5, 1, true,
+            rounds.Add(CreateCreepRoundAsset("Round24_AncientDragon", "主神守卫", 5, 1, true,
                 new CreepInfo[] {
-                    new CreepInfo { creepName = "远古龙", health = 3500, attackDamage = 120, armor = 60, attackSpeed = 0.55f, color = new Color(0.9f, 0.6f, 0.1f) }
+                    new CreepInfo { creepName = "主神守卫", health = 3500, attackDamage = 120, armor = 60, attackSpeed = 0.55f, color = new Color(0.9f, 0.8f, 0.3f) }
                 }));
 
             return rounds;

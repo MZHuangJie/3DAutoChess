@@ -62,12 +62,15 @@ namespace AutoChess.UI
 
         // Battle log
         private GameObject battleLogPanel;
+        private UnityEngine.UI.ScrollRect battleLogScrollRect;
         private TextMeshProUGUI battleLogText;
 
         // Piece detail panel
         private GameObject pieceDetailPanel;
         private TextMeshProUGUI pieceDetailText;
         private GameObject pieceDetailEquipContainer;
+        private ChessPiece currentDetailPiece;
+        private int lastDetailEquipHash = -1;
         private GameObject equipDetailPanel;
         private TextMeshProUGUI equipDetailText;
 
@@ -478,14 +481,14 @@ namespace AutoChess.UI
             battleLogPanel = new GameObject("BattleLogPanel");
             battleLogPanel.transform.SetParent(transform, false);
             var rt = battleLogPanel.AddComponent<RectTransform>();
-            rt.anchorMin = new Vector2(1, 0);
-            rt.anchorMax = new Vector2(1, 0);
-            rt.pivot = new Vector2(1, 0);
-            rt.sizeDelta = new Vector2(200, 130);
-            rt.anchoredPosition = new Vector2(0, 150);
+            rt.anchorMin = new Vector2(1, 1);
+            rt.anchorMax = new Vector2(1, 1);
+            rt.pivot = new Vector2(1, 1);
+            rt.sizeDelta = new Vector2(200, 160);
+            rt.anchoredPosition = new Vector2(0, -395);
 
             var bg = battleLogPanel.AddComponent<Image>();
-            bg.color = new Color(0.08f, 0.08f, 0.12f, 0.8f);
+            bg.color = new Color(0.08f, 0.08f, 0.12f, 0.85f);
 
             var titleGO = new GameObject("Title");
             titleGO.transform.SetParent(battleLogPanel.transform, false);
@@ -501,18 +504,48 @@ namespace AutoChess.UI
             titleTmp.alignment = TextAlignmentOptions.Center;
             titleTmp.color = new Color(1f, 0.8f, 0.4f);
 
+            var scrollGO = new GameObject("Scroll");
+            scrollGO.transform.SetParent(battleLogPanel.transform, false);
+            var scrollRt = scrollGO.AddComponent<RectTransform>();
+            scrollRt.anchorMin = Vector2.zero;
+            scrollRt.anchorMax = Vector2.one;
+            scrollRt.offsetMin = new Vector2(0, 0);
+            scrollRt.offsetMax = new Vector2(0, -22);
+            var scrollRect = scrollGO.AddComponent<UnityEngine.UI.ScrollRect>();
+            scrollRect.horizontal = false;
+            scrollRect.vertical = true;
+            scrollRect.movementType = UnityEngine.UI.ScrollRect.MovementType.Clamped;
+            scrollRect.scrollSensitivity = 20f;
+            var scrollMask = scrollGO.AddComponent<UnityEngine.UI.Mask>();
+            scrollMask.showMaskGraphic = false;
+            var scrollImg = scrollGO.AddComponent<Image>();
+            scrollImg.color = Color.clear;
+
+            var contentGO = new GameObject("Content");
+            contentGO.transform.SetParent(scrollGO.transform, false);
+            var contentRt = contentGO.AddComponent<RectTransform>();
+            contentRt.anchorMin = new Vector2(0, 1);
+            contentRt.anchorMax = new Vector2(1, 1);
+            contentRt.pivot = new Vector2(0.5f, 1);
+            contentRt.sizeDelta = new Vector2(0, 0);
+            var csf = contentGO.AddComponent<UnityEngine.UI.ContentSizeFitter>();
+            csf.verticalFit = UnityEngine.UI.ContentSizeFitter.FitMode.PreferredSize;
+            scrollRect.content = contentRt;
+            battleLogScrollRect = scrollRect;
             var logGO = new GameObject("LogText");
-            logGO.transform.SetParent(battleLogPanel.transform, false);
+            logGO.transform.SetParent(contentGO.transform, false);
             var logRt = logGO.AddComponent<RectTransform>();
-            logRt.anchorMin = Vector2.zero;
-            logRt.anchorMax = Vector2.one;
-            logRt.offsetMin = new Vector2(6, 4);
-            logRt.offsetMax = new Vector2(-6, -22);
+            logRt.anchorMin = new Vector2(0, 1);
+            logRt.anchorMax = new Vector2(1, 1);
+            logRt.pivot = new Vector2(0, 1);
+            logRt.sizeDelta = new Vector2(-12, 0);
+            logRt.anchoredPosition = new Vector2(6, 0);
             battleLogText = logGO.AddComponent<TextMeshProUGUI>();
             battleLogText.text = "";
             battleLogText.fontSize = 11;
             battleLogText.alignment = TextAlignmentOptions.TopLeft;
             battleLogText.color = Color.white;
+            battleLogText.enableWordWrapping = true;
         }
 
         void CreatePieceDetailPanel()
@@ -522,11 +555,10 @@ namespace AutoChess.UI
             pieceDetailPanel = new GameObject("PieceDetailPanel");
             pieceDetailPanel.transform.SetParent(transform, false);
             var rt = pieceDetailPanel.AddComponent<RectTransform>();
-            rt.anchorMin = new Vector2(0.5f, 0.5f);
-            rt.anchorMax = new Vector2(0.5f, 0.5f);
-            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.zero;
+            rt.pivot = new Vector2(0, 0.5f);
             rt.sizeDelta = new Vector2(320, 450);
-            rt.anchoredPosition = new Vector2(160, 0);
 
             var bg = pieceDetailPanel.AddComponent<Image>();
             bg.color = new Color(0.06f, 0.06f, 0.1f, 0.92f);
@@ -553,15 +585,13 @@ namespace AutoChess.UI
             eqRt.offsetMin = new Vector2(14, 10);
             eqRt.offsetMax = new Vector2(-14, 46);
 
-            // Equipment detail panel — to the right of piece detail
             equipDetailPanel = new GameObject("EquipDetailPanel");
             equipDetailPanel.transform.SetParent(transform, false);
             var edRt = equipDetailPanel.AddComponent<RectTransform>();
-            edRt.anchorMin = new Vector2(0.5f, 0.5f);
-            edRt.anchorMax = new Vector2(0.5f, 0.5f);
+            edRt.anchorMin = Vector2.zero;
+            edRt.anchorMax = Vector2.zero;
             edRt.pivot = new Vector2(0, 0.5f);
             edRt.sizeDelta = new Vector2(220, 300);
-            edRt.anchoredPosition = new Vector2(325, 0);
 
             var edBg = equipDetailPanel.AddComponent<Image>();
             edBg.color = new Color(0.08f, 0.08f, 0.14f, 0.95f);
@@ -583,30 +613,101 @@ namespace AutoChess.UI
             pieceDetailPanel.SetActive(false);
         }
 
+        void PositionPanelNearScreenPoint(RectTransform panelRt, Vector2 screenPoint, float gap = 10f)
+        {
+            var canvasRt = GetComponent<RectTransform>();
+            Vector2 canvasSize = canvasRt.sizeDelta;
+            float scaleX = canvasSize.x / Screen.width;
+            float scaleY = canvasSize.y / Screen.height;
+            Vector2 panelSize = panelRt.sizeDelta;
+
+            float canvasX = screenPoint.x * scaleX;
+            float canvasY = screenPoint.y * scaleY;
+
+            float rightX = canvasX + gap;
+            float leftX = canvasX - gap - panelSize.x;
+
+            float posX;
+            if (rightX + panelSize.x <= canvasSize.x)
+                posX = rightX;
+            else if (leftX >= 0)
+                posX = leftX;
+            else
+                posX = Mathf.Clamp(canvasX - panelSize.x * 0.5f, 0, canvasSize.x - panelSize.x);
+
+            float posY = Mathf.Clamp(canvasY, panelSize.y * 0.5f, canvasSize.y - panelSize.y * 0.5f);
+
+            panelRt.anchoredPosition = new Vector2(posX, posY - panelSize.y * 0.5f);
+            panelRt.pivot = new Vector2(0, 0);
+        }
+
         public void ShowPieceDetail(ChessPiece piece)
         {
-            if (piece == null || piece.heroData == null) return;
+            if (piece == null) return;
             if (pieceDetailPanel == null) CreatePieceDetailPanel();
 
+            currentDetailPiece = piece;
+            lastDetailEquipHash = -1;
+            RefreshPieceDetailContent(piece);
+
+            pieceDetailPanel.SetActive(true);
+
+            Vector2 screenPos = Input.mousePosition;
+            PositionPanelNearScreenPoint(pieceDetailPanel.GetComponent<RectTransform>(), screenPos, 20f);
+        }
+
+        public void HidePieceDetail()
+        {
+            currentDetailPiece = null;
+            lastDetailEquipHash = -1;
+            if (pieceDetailPanel != null)
+                pieceDetailPanel.SetActive(false);
+            if (equipDetailPanel != null)
+                equipDetailPanel.SetActive(false);
+        }
+
+        void LateUpdate()
+        {
+            if (currentDetailPiece != null && pieceDetailPanel != null && pieceDetailPanel.activeSelf)
+            {
+                if (currentDetailPiece.IsAlive)
+                    RefreshPieceDetailContent(currentDetailPiece);
+                else
+                    HidePieceDetail();
+            }
+        }
+
+        void RefreshPieceDetailContent(ChessPiece piece)
+        {
             var h = piece.heroData;
-            var stars = new string('★', piece.starLevel);
             var sb = new System.Text.StringBuilder();
 
-            int sellValue = h.cost * (int)Mathf.Pow(3, piece.starLevel - 1);
-            sb.AppendLine($"<size=20><b>{h.heroName}</b></size>  {stars}    <color=#FFD700>{sellValue}金币</color>");
+            string pieceName = h != null ? h.heroName : piece.gameObject.name.Replace("Creep_", "");
+            int starLevel = piece.starLevel;
+            var stars = new string('★', starLevel);
+
+            if (h != null)
+            {
+                int sellValue = h.cost * (int)Mathf.Pow(3, starLevel - 1);
+                sb.AppendLine($"<size=20><b>{pieceName}</b></size>  {stars}    <color=#FFD700>{sellValue}金币</color>");
+            }
+            else
+            {
+                sb.AppendLine($"<size=20><b>{pieceName}</b></size>  <color=#FF6060>野怪</color>");
+            }
             sb.AppendLine();
 
             sb.AppendLine($"血量: {piece.currentHealth}/{piece.maxHealth}");
             sb.AppendLine($"蓝量: {piece.currentMana}/{piece.maxMana}");
             sb.AppendLine();
 
-            if (h.factions != null && h.factions.Length > 0)
+            if (h != null && h.factions != null && h.factions.Length > 0)
             {
                 sb.AppendLine($"<color=#80D0FF>羁绊: {string.Join(" / ", h.factions)}</color>");
                 sb.AppendLine();
             }
 
-            if (h.skillType != SkillType.None && !string.IsNullOrEmpty(h.skillName))
+            if (h != null && h.skillType != SkillType.None && !string.IsNullOrEmpty(h.skillName))
             {
                 sb.AppendLine($"<color=#FFA040>技能: {h.skillName}</color>");
                 string typeStr = h.skillType switch
@@ -626,47 +727,55 @@ namespace AutoChess.UI
                 sb.AppendLine();
             }
 
-            string atkType = h.attackType == AttackType.Melee ? "近战" : "远程";
+            string atkType = (h != null ? h.attackType : AttackType.Melee) == AttackType.Melee ? "近战" : "远程";
             sb.AppendLine($"攻击力: {piece.attackDamage}  攻速: {piece.attackSpeed:F2}");
             sb.AppendLine($"护甲: {piece.armor}  魔抗: {piece.magicResist}");
             sb.AppendLine($"攻击距离: {piece.attackRange} ({atkType})");
             sb.AppendLine();
 
-            // Clear old equipment icons
-            foreach (Transform child in pieceDetailEquipContainer.transform)
-                Destroy(child.gameObject);
+            int equipHash = ComputeEquipHash(piece);
+            bool equipChanged = equipHash != lastDetailEquipHash;
+
+            if (equipChanged)
+            {
+                lastDetailEquipHash = equipHash;
+                foreach (Transform child in pieceDetailEquipContainer.transform)
+                    Destroy(child.gameObject);
+            }
 
             if (piece.equipment.Count > 0)
             {
                 sb.AppendLine("<color=#40FF80>装备:</color>");
                 pieceDetailEquipContainer.SetActive(true);
-                for (int i = 0; i < piece.equipment.Count; i++)
+                if (equipChanged)
                 {
-                    var eq = piece.equipment[i];
-                    if (eq == null) continue;
+                    for (int i = 0; i < piece.equipment.Count; i++)
+                    {
+                        var eq = piece.equipment[i];
+                        if (eq == null) continue;
 
-                    var iconGO = new GameObject($"EqIcon_{i}");
-                    iconGO.transform.SetParent(pieceDetailEquipContainer.transform, false);
-                    var iconRt = iconGO.AddComponent<RectTransform>();
-                    iconRt.anchorMin = new Vector2(0, 0.5f);
-                    iconRt.anchorMax = new Vector2(0, 0.5f);
-                    iconRt.pivot = new Vector2(0, 0.5f);
-                    iconRt.sizeDelta = new Vector2(32, 32);
-                    iconRt.anchoredPosition = new Vector2(i * 38, 0);
+                        var iconGO = new GameObject($"EqIcon_{i}");
+                        iconGO.transform.SetParent(pieceDetailEquipContainer.transform, false);
+                        var iconRt = iconGO.AddComponent<RectTransform>();
+                        iconRt.anchorMin = new Vector2(0, 0.5f);
+                        iconRt.anchorMax = new Vector2(0, 0.5f);
+                        iconRt.pivot = new Vector2(0, 0.5f);
+                        iconRt.sizeDelta = new Vector2(32, 32);
+                        iconRt.anchoredPosition = new Vector2(i * 38, 0);
 
-                    var iconImg = iconGO.AddComponent<Image>();
-                    iconImg.color = eq.displayColor;
+                        var iconImg = iconGO.AddComponent<Image>();
+                        iconImg.color = eq.displayColor;
 
-                    var btn = iconGO.AddComponent<Button>();
-                    var capturedEq = eq;
-                    btn.onClick.AddListener(() => ShowEquipmentDetail(capturedEq));
+                        var btn = iconGO.AddComponent<Button>();
+                        var capturedEq = eq;
+                        btn.onClick.AddListener(() => ShowEquipmentDetail(capturedEq));
 
-                    var nameGO = new GameObject("Name");
-                    nameGO.transform.SetParent(iconGO.transform, false);
-                    var nameRt = nameGO.AddComponent<RectTransform>();
-                    nameRt.anchorMin = Vector2.zero;
-                    nameRt.anchorMax = Vector2.one;
-                    nameRt.offsetMin = Vector2.zero;
+                        var nameGO = new GameObject("Name");
+                        nameGO.transform.SetParent(iconGO.transform, false);
+                        var nameRt = nameGO.AddComponent<RectTransform>();
+                        nameRt.anchorMin = Vector2.zero;
+                        nameRt.anchorMax = Vector2.one;
+                        nameRt.offsetMin = Vector2.zero;
                     nameRt.offsetMax = Vector2.zero;
                     var nameTmp = nameGO.AddComponent<TextMeshProUGUI>();
                     nameTmp.text = eq.equipmentName.Substring(0, 1);
@@ -674,6 +783,7 @@ namespace AutoChess.UI
                     nameTmp.alignment = TextAlignmentOptions.Center;
                     nameTmp.color = Color.white;
                     nameTmp.raycastTarget = false;
+                    }
                 }
             }
             else
@@ -683,15 +793,17 @@ namespace AutoChess.UI
             }
 
             pieceDetailText.text = sb.ToString();
-            pieceDetailPanel.SetActive(true);
         }
 
-        public void HidePieceDetail()
+        int ComputeEquipHash(ChessPiece piece)
         {
-            if (pieceDetailPanel != null)
-                pieceDetailPanel.SetActive(false);
-            if (equipDetailPanel != null)
-                equipDetailPanel.SetActive(false);
+            int hash = piece.equipment.Count;
+            for (int i = 0; i < piece.equipment.Count; i++)
+            {
+                if (piece.equipment[i] != null)
+                    hash = hash * 31 + piece.equipment[i].GetInstanceID();
+            }
+            return hash;
         }
 
         public void ShowFactionDetail(string factionName)
@@ -756,6 +868,9 @@ namespace AutoChess.UI
 
             pieceDetailText.text = sb.ToString();
             pieceDetailPanel.SetActive(true);
+
+            Vector2 screenPos = Input.mousePosition;
+            PositionPanelNearScreenPoint(pieceDetailPanel.GetComponent<RectTransform>(), screenPos, 20f);
         }
 
         public void ShowEquipmentDetail(EquipmentData eq)
@@ -794,6 +909,9 @@ namespace AutoChess.UI
 
             equipDetailText.text = sb.ToString();
             equipDetailPanel.SetActive(true);
+
+            Vector2 screenPos = Input.mousePosition;
+            PositionPanelNearScreenPoint(equipDetailPanel.GetComponent<RectTransform>(), screenPos, 10f);
         }
 
         void CreateEquipmentPanel()
@@ -1460,6 +1578,8 @@ namespace AutoChess.UI
         {
             if (titlePanel != null) return;
 
+            SetGamePanelsVisible(false);
+
             titlePanel = new GameObject("TitlePanel");
             titlePanel.transform.SetParent(transform, false);
             var rt = titlePanel.AddComponent<RectTransform>();
@@ -1469,7 +1589,7 @@ namespace AutoChess.UI
             rt.offsetMax = Vector2.zero;
 
             var bg = titlePanel.AddComponent<Image>();
-            bg.color = new Color(0.05f, 0.05f, 0.1f, 0.95f);
+            bg.color = new Color(0.05f, 0.05f, 0.1f, 1f);
 
             var titleGO = new GameObject("Title");
             titleGO.transform.SetParent(titlePanel.transform, false);
@@ -1479,7 +1599,7 @@ namespace AutoChess.UI
             titleRt.sizeDelta = new Vector2(600, 80);
             titleRt.anchoredPosition = new Vector2(0, 100);
             var titleTmp = titleGO.AddComponent<TextMeshProUGUI>();
-            titleTmp.text = "3D 自走棋";
+            titleTmp.text = "无限恐怖自走棋";
             titleTmp.fontSize = 60;
             titleTmp.alignment = TextAlignmentOptions.Center;
             titleTmp.color = new Color(1f, 0.85f, 0.3f);
@@ -1522,6 +1642,20 @@ namespace AutoChess.UI
                 Destroy(titlePanel);
                 titlePanel = null;
             }
+            SetGamePanelsVisible(true);
+        }
+
+        void SetGamePanelsVisible(bool visible)
+        {
+            if (shopPanel != null) shopPanel.SetActive(visible);
+            if (factionPanel != null) factionPanel.SetActive(visible);
+            if (equipmentPanel != null) equipmentPanel.SetActive(visible);
+            if (playerInfoPanel != null) playerInfoPanel.SetActive(visible);
+            if (battleLogPanel != null) battleLogPanel.SetActive(visible);
+            if (phaseText != null) phaseText.gameObject.SetActive(visible);
+            if (timerText != null) timerText.gameObject.SetActive(visible);
+            if (roundText != null) roundText.gameObject.SetActive(visible);
+            if (matchupText != null) matchupText.gameObject.SetActive(visible);
         }
 
         // ========== Augment Selection ==========
@@ -1762,6 +1896,24 @@ namespace AutoChess.UI
                 eqTmp.color = item.picked ? Color.gray : new Color(0.6f, 0.9f, 1f);
                 eqTmp.raycastTarget = false;
 
+                if (item.picked && !string.IsNullOrEmpty(item.pickedByName))
+                {
+                    var pickerGO = new GameObject("Picker");
+                    pickerGO.transform.SetParent(cardGO.transform, false);
+                    var pickerRt = pickerGO.AddComponent<RectTransform>();
+                    pickerRt.anchorMin = new Vector2(0, 0.5f);
+                    pickerRt.anchorMax = new Vector2(1, 0.5f);
+                    pickerRt.sizeDelta = new Vector2(-8, 20);
+                    pickerRt.anchoredPosition = new Vector2(0, -25);
+                    var pickerTmp = pickerGO.AddComponent<TextMeshProUGUI>();
+                    pickerTmp.text = item.pickedByName;
+                    pickerTmp.fontSize = 12;
+                    pickerTmp.alignment = TextAlignmentOptions.Center;
+                    pickerTmp.color = new Color(1f, 0.6f, 0.3f);
+                    pickerTmp.fontStyle = FontStyles.Italic;
+                    pickerTmp.raycastTarget = false;
+                }
+
                 if (!item.picked)
                 {
                     var btn = cardGO.AddComponent<Button>();
@@ -1777,7 +1929,6 @@ namespace AutoChess.UI
         {
             if (displayedCarouselItems == null || index < 0 || index >= displayedCarouselItems.Count) return;
             if (displayedCarouselItems[index].picked) return;
-            HideCarouselSelection();
             GameLoopManager.Instance?.OnCarouselSelected(index);
         }
 
@@ -1796,7 +1947,7 @@ namespace AutoChess.UI
         public void UpdateBattleLog()
         {
             if (battleLogText == null || CombatStatsTracker.Instance == null) return;
-            var history = CombatStatsTracker.Instance.GetRecentHistory(5);
+            var history = CombatStatsTracker.Instance.GetRecentHistory(50);
             var sb = new System.Text.StringBuilder();
             foreach (var record in history)
             {
@@ -1805,6 +1956,10 @@ namespace AutoChess.UI
                 sb.AppendLine($"R{record.round} vs {record.opponentName} {result}{dmgStr}");
             }
             battleLogText.text = sb.ToString();
+            if (battleLogScrollRect != null)
+                Canvas.ForceUpdateCanvases();
+            if (battleLogScrollRect != null)
+                battleLogScrollRect.verticalNormalizedPosition = 0f;
         }
 
         public void OnRestartClicked()
